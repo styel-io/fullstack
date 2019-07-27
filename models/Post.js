@@ -24,6 +24,14 @@ const PostSchema = new Schema({
       }
     }
   ],
+  bookmark: [
+    {
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "users"
+      }
+    }
+  ],
   comments: [
     {
       user: {
