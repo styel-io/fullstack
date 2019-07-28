@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
-const User = require("../../models/User");
 const config = require("config");
-const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { check, validationResult } = require("express-validator");
+
+const User = require("../../models/User");
 
 // @route    GET api/auth
 // @desc     Test route
@@ -43,17 +44,20 @@ router.post(
 
     try {
       // 요청받은 email 값을 데이터베이스에서 검증하여 user값에 넣는다
-      let user = await User.findOne({ email: email });
+      let user = await User.findOne({ email });
 
-      // 만약 유저가 존재한다면 status 400 응답과 함께 에러 메시지를 나타낸다.
+      // 만약 유저가 존재하지 않는다면 status 400 응답과 함께 에러 메시지를 나타낸다.
       if (!user) {
-        res.status(400).json({ errors: [{ mgs: "Invalid Credentials" }] });
+        // res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+        res.status(400).json({ errors: [{ msg: "Invalid Email" }] });
+        return;
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        res.status(400).json({ errors: [{ mgs: "Invalid Credentials" }] });
+        // res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] });
+        res.status(400).json({ errors: [{ msg: "Invalid Password" }] });
       }
 
       const payload = {
