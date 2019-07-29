@@ -3,3 +3,11 @@
   width: 100%;
   margin: 0 auto;
 }
+
+.headerSpace {
+  height: 60px;
+}
+
+.signform {
+  margin-top: 50px;
+}

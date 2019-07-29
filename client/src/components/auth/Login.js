@@ -37,7 +37,7 @@ const Login = ({ login, isAuthenticated }) => {
   return (
     <Fragment>
       <Grid textAlign="center" verticalAlign="middle">
-        <Grid.Column style={{ maxWidth: 350 }}>
+        <Grid.Column style={{ maxWidth: 350 }} className="signform">
           <Header as="h2" color="teal" textAlign="center">
             STYEL
           </Header>

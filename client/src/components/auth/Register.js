@@ -41,9 +41,9 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     return <Redirect to="/dashboard" />;
   }
   return (
-    <Fragment>
+    <Fragment clssName="signform">
       <Grid textAlign="center" verticalAlign="middle">
-        <Grid.Column style={{ maxWidth: 350 }}>
+        <Grid.Column style={{ maxWidth: 350 }} className="signform">
           <Header as="h2" color="teal" textAlign="center">
             STYEL
           </Header>

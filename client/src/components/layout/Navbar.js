@@ -27,21 +27,24 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     </div>
   );
   return (
-    <Menu fixed="top" borderless>
-      <Container>
-        <Menu.Item header>
-          <Link to="/">
-            {/* <Icon name="angle up" size="large" /> */}
-            STYEL
-          </Link>
-        </Menu.Item>
-        <Menu.Item>
-          {!loading && (
-            <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-          )}
-        </Menu.Item>
-      </Container>
-    </Menu>
+    <div>
+      <Menu fixed="top" borderless>
+        <Container>
+          <Menu.Item header>
+            <Link to="/">
+              {/* <Icon name="angle up" size="large" /> */}
+              <h2>STYEL</h2>
+            </Link>
+          </Menu.Item>
+          <Menu.Item>
+            {!loading && (
+              <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+            )}
+          </Menu.Item>
+        </Container>
+      </Menu>
+      <div className="headerSpace" />
+    </div>
   );
 };
 
