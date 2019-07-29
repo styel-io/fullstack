@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../../actions/auth";
-import { Container, Menu, Icon, Header } from "semantic-ui-react";
+import { Container, Menu, Icon, Grid } from "semantic-ui-react";
 
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
@@ -27,8 +27,8 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     </div>
   );
   return (
-    <div>
-      <Menu fixed="top" borderless>
+    <Fragment>
+      <Menu fixed="top" borderless secondary>
         <Container>
           <Menu.Item header>
             <Link to="/">
@@ -36,15 +36,18 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
               <h2>STYEL</h2>
             </Link>
           </Menu.Item>
-          <Menu.Item>
-            {!loading && (
-              <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-            )}
-          </Menu.Item>
+          <Menu.Menu position="right">
+            <Menu.Item>
+              {!loading && (
+                <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+              )}
+            </Menu.Item>
+          </Menu.Menu>
         </Container>
       </Menu>
+
       <div className="headerSpace" />
-    </div>
+    </Fragment>
   );
 };
 
