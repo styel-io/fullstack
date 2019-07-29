@@ -12,14 +12,39 @@
   margin-top: 30px;
 }
 
-.navBar {
-  max-width: 580px;
-  width: 100%;
-  margin: 0 auto;
-}
-
 .mainFrame {
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
+}
+
+.feedBox {
+  border: 0 solid lightgray;
+}
+
+.feedImage {
+  width: 600px;
+  display: inline-block;
+}
+
+.feedContent {
+  width: 298px;
+  display: inline-block;
+}
+
+.feedSpace {
+  height: 50px;
+}
+
+.ui[class*="top fixed"].menu {
+  border-bottom: none;
+}
+
+.ui.fixed.menu,
+.ui[class*="top fixed"].menu {
+  left: auto;
+}
+
+.ui.menu.fixed {
+  max-width: 900px;
 }
