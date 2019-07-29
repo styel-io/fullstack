@@ -11,6 +11,7 @@ import store from "./store";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 import "./App.css";
+import { Container } from "semantic-ui-react";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -26,15 +27,17 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Fragment>
-          <Navbar />
-          <Route exact path="/" component={Main} />
-          <section className="container">
-            <Switch>
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/Login" component={Login} />
-            </Switch>
-            {/* <Alert /> */}
-          </section>
+          <div className="mainFrame">
+            <Navbar />
+            <Route exact path="/" component={Main} />
+            <section className="container">
+              <Switch>
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/Login" component={Login} />
+              </Switch>
+              {/* <Alert /> */}
+            </section>
+          </div>
         </Fragment>
       </Router>
     </Provider>

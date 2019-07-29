@@ -9,11 +9,17 @@
 }
 
 .signform {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .navBar {
-  max-width: 500px;
+  max-width: 580px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.mainFrame {
+  max-width: 960px;
   width: 100%;
   margin: 0 auto;
 }
