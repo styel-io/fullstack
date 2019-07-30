@@ -20,10 +20,11 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     name: "",
     email: "",
     password: "",
-    password2: ""
+    password2: "",
+    role: ""
   });
 
-  const { name, email, password, password2 } = formData;
+  const { name, email, password, password2, role } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,7 +34,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     if (password !== password2) {
       setAlert("Password do not match", "negative");
     } else {
-      register({ name, email, password });
+      register({ name, email, password, role });
     }
   };
 
@@ -85,6 +86,15 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                 placeholder="Confirm Password"
                 name="password2"
                 value={password2}
+                onChange={e => onChange(e)}
+              />
+              <Form.Input
+                size="large"
+                fluid
+                type="text"
+                placeholder="role test"
+                name="role"
+                value={role}
                 onChange={e => onChange(e)}
               />
               <Button size="large" color="teal" fluid type="submit">
