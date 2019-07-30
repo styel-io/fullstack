@@ -9,18 +9,21 @@ const Profile = require("../../models/Profile");
 const User = require("../../models/User");
 
 // @route    GET api/profile/me
-// @desc     Get currnt users profile
+// @desc     Get currnt users profile // 현재 사용자 프로파일 가져오기
 // @access   Private
 router.get("/me", auth, async (req, res) => {
   try {
+    // 요청받은 유저 값을 데이터베이스에서 찾고 populate를 실행하여 담는다. 몽구스 메소드 함수인 populate에 대한 이해는 https://www.zerocho.com/category/MongoDB/post/59a66f8372262500184b5363 를 읽어보자.
     const profile = await Profile.findOne({ user: req.user.id }).populate(
       "user",
       ["name", "avatar"]
     );
 
+    // 만약 프로파일이 없으면 상태값 400과 메시지를 클라이언트에게 전달한다
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
     }
+    // 존재하면 프로파일 값을 클라이언트에게 전달한다.
     res.json(profile);
   } catch (err) {
     console.error(err.message);
@@ -29,17 +32,15 @@ router.get("/me", auth, async (req, res) => {
 });
 
 // @route    POST api/profile
-// @desc     Create or update user profile
+// @desc     Create or update user profile // 유저 프로파일 생성 및 수정
 // @access   Private
 router.post(
   "/",
   [
     auth,
     [
+      // 프로파일 스키마에서 status는 필수 입력 항목으로 지정하였기 때문에 입력값에 status가 없거나 비어있으면 에러 메시지를 전달한다.
       check("status", "Status is required")
-        .not()
-        .isEmpty(),
-      check("skills", "Skills is required")
         .not()
         .isEmpty()
     ]
@@ -61,7 +62,7 @@ router.post(
       linkdin
     } = req.body;
 
-    // Build profile object
+    // Build profile object // 프로파일을 객체 형대로 담는다.
     const profileFields = {};
 
     profileFields.user = req.user.id;
@@ -80,8 +81,10 @@ router.post(
     if (instagram) profileFields.social.instagram = instagram;
 
     try {
-      let profile = await Profile.findOne({ user: req.user.id });
+      // Profile 컬렉션에서 요청된 유저아이디를 찾아 profile변수에 담는다.
+      const profile = await Profile.findOne({ user: req.user.id });
 
+      // 만약 프로파일이 존재하면 업데이트한다.
       if (profile) {
         // Update
         profile = await Profile.findOneAndUpdate(
@@ -92,6 +95,7 @@ router.post(
         return res.json(profile);
       }
 
+      // 프로파일이 존재하지 않는다면 새로 생성한다.
       // Create
       profile = new Profile(profileFields);
 
@@ -105,7 +109,7 @@ router.post(
 );
 
 // @route    Get api/profile
-// @desc     Get all profiles
+// @desc     Get all profiles  // 모든 사용자 프로파일 가져오기
 // @access   Public
 router.get("/", async (req, res) => {
   try {
@@ -118,7 +122,7 @@ router.get("/", async (req, res) => {
 });
 
 // @route    Get api/profile/user/:user_id
-// @desc     Get profile by user ID
+// @desc     Get profile by user ID  // 시멘틱 url로 전달받은 user_id값으로 프로파일 가져오기
 // @access   Public
 router.get("/user/:user_id", async (req, res) => {
   try {
@@ -140,7 +144,7 @@ router.get("/user/:user_id", async (req, res) => {
 });
 
 // @route    DELETE api/profile
-// @desc     Delete profile, user & posts
+// @desc     Delete profile, user & posts // 사용자 계정 전부 삭제 (프로파일, 포스트 포함)
 // @access   Private
 router.delete("/", auth, async (req, res) => {
   try {
