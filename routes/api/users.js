@@ -11,11 +11,12 @@ const User = require("../../models/User");
 // ???????
 
 // @route    POST api/users
-// @desc     Register user
-// @access   Public
+// @desc     Register user // 회원가입
+// @access   Public  // 접근권한 모두 가능
 router.post(
   "/",
   [
+    // name값이 없거나 비어있거나, email값이 email형식이 아니거나, password가 6자리 이하면 에러 메시지를 발생시킨다.
     check("name", "Name is required")
       .not()
       .isEmpty(),
@@ -56,18 +57,23 @@ router.post(
         role
       });
 
+      // salt를 생성하여 변수 salt에 담는다.
       const salt = await bcrypt.genSalt(10);
 
+      // 요청받은 패스워드값과 salt를 이용하여 해쉬화 하고 user.password에 담는다.
       user.password = await bcrypt.hash(password, salt);
 
+      // 데이터 베이스에 저장한다.
       await user.save();
 
+      // 토큰에 저장할 user.id값을 payload 변수에 담는다.
       const payload = {
         user: {
           id: user.id
         }
       };
 
+      // jwt 토큰을 생성하고 에러가 없으면 클라이언트에게 토큰을 전달한다.
       jwt.sign(
         payload,
         config.get("jwtSecret"),
