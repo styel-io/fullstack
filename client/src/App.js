@@ -2,8 +2,10 @@ import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Main from "./components/layout/Main";
+import Upload_file from "./components/layout/Upload_file";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+
 // import Alert from "./components/layout/Alert";
 // Redux
 import { Provider } from "react-redux";
@@ -33,7 +35,8 @@ const App = () => {
             <section className="container">
               <Switch>
                 <Route exact path="/register" component={Register} />
-                <Route exact path="/Login" component={Login} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/upload_file" component={Upload_file} />
               </Switch>
               {/* <Alert /> */}
             </section>
