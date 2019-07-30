@@ -34,14 +34,14 @@ export const loadUser = () => async dispatch => {
 };
 
 // Register User
-export const register = ({ name, email, password }) => async dispatch => {
+export const register = ({ name, email, password, role }) => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
 
-  const body = JSON.stringify({ name, email, password });
+  const body = JSON.stringify({ name, email, password, role });
 
   try {
     const res = await axios.post("/api/users", body, config);
@@ -82,6 +82,7 @@ export const login = (email, password) => async dispatch => {
       type: LOGIN_SUCCESS,
       payload: res.data
     });
+    console.log("payload");
 
     dispatch(loadUser());
   } catch (err) {
