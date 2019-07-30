@@ -4,7 +4,7 @@ const AWS = require("aws-sdk");
 require("dotenv").config(); // Configure dotenv to load in the .env file
 // Configure aws with your accessKeyId and your secretAccessKey
 AWS.config.update({
-  region: "us-east-1", // Put your aws region here
+  region: "ap-northeast-2", // Put your aws region here
   accessKeyId: process.env.aws_access_key_id,
   secretAccessKey: process.env.aws_secret_access_key
 });
