@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../../actions/auth";
-import { Container, Menu, Icon } from "semantic-ui-react";
+import { Container, Menu, Icon, Image } from "semantic-ui-react";
 
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
@@ -33,8 +33,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
         <Container>
           <Menu.Item>
             <Link to="/">
-              {/* <Icon name="angle up" size="large" /> */}
-              <h2>STYEL</h2>
+              <Image src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_ci_36.png" />
             </Link>
           </Menu.Item>
           <Menu.Menu position="right">
