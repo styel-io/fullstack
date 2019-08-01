@@ -41,6 +41,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   if (isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
+
   return (
     <Fragment clssName="signform">
       <Grid textAlign="center" verticalAlign="middle">

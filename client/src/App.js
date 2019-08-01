@@ -6,14 +6,17 @@ import Upload_file from "./components/layout/Upload_file";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 
-// import Alert from "./components/layout/Alert";
+// Routing
+import Routes from "./components/routing/Routes";
+
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
-import "./App.css";
 import { Container } from "semantic-ui-react";
+
+import "./App.css";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -31,15 +34,10 @@ const App = () => {
         <Fragment>
           <div className="mainFrame">
             <Navbar />
-            <Route exact path="/" component={Main} />
-            <section className="container">
-              <Switch>
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/upload_file" component={Upload_file} />
-              </Switch>
-              {/* <Alert /> */}
-            </section>
+            <Switch>
+              <Route exact path="/" component={Main} />
+              <Route component={Routes} />
+            </Switch>
           </div>
         </Fragment>
       </Router>
