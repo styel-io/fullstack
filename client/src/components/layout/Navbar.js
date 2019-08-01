@@ -7,9 +7,13 @@ import { Container, Menu, Icon, Image } from "semantic-ui-react";
 
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
-    <Link onClick={logout} to="/">
-      <span className="hide-sm"> Logout</span>
-    </Link>
+    <div>
+      <Link to="/my_page">My Page</Link>
+      <Link onClick={logout} to="/">
+        <span className="hide-sm"> Logout</span>
+      </Link>
+    </div>
+
   );
 
   const guestLinks = (
