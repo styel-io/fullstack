@@ -4,6 +4,7 @@ const auth = require("../../middleware/auth");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const userschema = require("../../models/User");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../../models/User");
@@ -22,37 +23,53 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.post("/check_pass", 
+router.post("/check_pass",
   [
     // 패스워드가 존재하는지 확인한다
     check("password", "Password is required").exists()
   ],
-  async(req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
-      return res.status(400).json({errors: errors.array()});
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-    // 비밀번호 체크
-    const{password} = req.body;
-    const salt = await bcrypt.genSalt(10);
-    const check_pass = await bcrypt.hash(password, salt);
-    //확인 하기 위한 저장된 비밀번호 가져옴
-    const compare_pass = await User.findOne({password});
+    try {
+      // 비밀번호 체크
+      const password = req.body.password;
+      console.log(password);
+      console.log(typeof(password));
+      const salt = await bcrypt.genSalt(10);
 
-    if(check_pass == compare_pass){
-      return res.status(200).json({success: "/api/auth/update"})
-    }else{
-      return res.status(400).json({errors: [{ msg: "Invalid Password" }]});
+      const check_pass = await bcrypt.hash(password, salt);
+      //확인 하기 위한 저장된 비밀번호 가져옴
+      const compare_pass = 'test';
+      console.log("one case");
+      console.log(check_pass);
+      console.log("two case");
+      console.log(compare_pass);
+
+      if (check_pass == compare_pass) {
+        console.log("성공!!!")
+        return res.status(200).json({ success: "/api/auth/update" })
+      } else {
+        console.log("실패 ㅠㅠ");
+        return res.status(400).json({ errors: [{ msg: "Invalid Password" }] });
+      }
+    } catch(err){
+      console.log(err);
+      console.error(err.message);
+      res.status(500).send("Server error");
     }
 
-});
+
+  });
 
 // 개인정보 수정을 위해 값 보내주기
-router.get("/update", auth, async (req, res) =>{
-  try{
+router.get("/update", auth, async (req, res) => {
+  try {
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);
-  }catch(err){
+  } catch (err) {
     console.error(err.message);
     res.status(500).send("server error");
   }
@@ -124,7 +141,7 @@ router.post(
 
 
 router.patch(
-  "/" , [
+  "/", [
     check("name", "Name is required")
       .not()
       .isEmpty(),

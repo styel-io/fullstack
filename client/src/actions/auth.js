@@ -65,6 +65,31 @@ export const register = ({ name, email, password, role }) => async dispatch => {
   }
 };
 
+// check Pass
+export const check = (password) => async dispatch =>{
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify({password});
+
+  try{
+    const res = await axios.post("/api/auth/check_pass", body, config);
+
+  }catch(err){
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
+    }
+    dispatch({
+      type: LOGIN_FAIL
+    });
+  }
+}
+
 // Login User
 export const login = (email, password) => async dispatch => {
   const config = {
