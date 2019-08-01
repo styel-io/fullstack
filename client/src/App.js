@@ -2,9 +2,6 @@ import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Main from "./components/layout/Main";
-import Upload_file from "./components/layout/Upload_file";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
 
 // Routing
 import Routes from "./components/routing/Routes";

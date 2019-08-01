@@ -9,9 +9,12 @@ import EditProfile from "../profile-forms/EditProfile";
 import Profiles from "../profiles/Profiles";
 import Profile from "../profile/Profile";
 import Posts from "../posts/Posts";
-import Post from "../../post/Post";
+import Post from "../post/Post";
 import NotFound from "../layout/NotFound";
 import PrivateRoute from "./PrivateRoute";
+import Upload_file from "./components/layout/Upload_file";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 
 const Routes = () => {
   return (
@@ -27,6 +30,7 @@ const Routes = () => {
         <PrivateRoute exact path="/edit-profile" component={EditProfile} />
         <PrivateRoute exact path="/posts" component={Posts} />
         <PrivateRoute exact path="/posts/:id" component={Post} />
+        <PrivateRoute exact path="/upload_file" component={Upload_file} />
         <Route component={NotFound} />
       </Switch>
     </section>
@@ -34,9 +38,3 @@ const Routes = () => {
 };
 
 export default Routes;
-
-{
-  /* <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/upload_file" component={Upload_file} /> */
-}

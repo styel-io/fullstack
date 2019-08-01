@@ -20,7 +20,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
       <li>
         <Link to="register">Register</Link>
       </li> */}
-      <Link to="/post">Post {"   "}</Link>
+      <Link to="/posts">Post {"   "}</Link>
       <Link to="/upload_file">Upload_file {"   "}</Link>
       <Link to="login">
         <Icon name="user circle" size="big" />
