@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Main from "./components/layout/Main";
 import Upload_file from "./components/layout/Upload_file";
+import My_page from "./components/layout/My_page";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+
 
 // import Alert from "./components/layout/Alert";
 // Redux
@@ -37,6 +39,7 @@ const App = () => {
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/upload_file" component={Upload_file} />
+                <Route exact path="/My_page" component={My_page} />
               </Switch>
               {/* <Alert /> */}
             </section>
