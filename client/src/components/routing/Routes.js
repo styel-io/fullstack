@@ -12,9 +12,7 @@ import Posts from "../posts/Posts";
 import Post from "../post/Post";
 import NotFound from "../layout/NotFound";
 import PrivateRoute from "./PrivateRoute";
-import Upload_file from "./components/layout/Upload_file";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
+import Upload_file from "../layout/Upload_file";
 
 const Routes = () => {
   return (

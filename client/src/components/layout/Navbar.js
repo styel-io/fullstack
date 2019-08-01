@@ -7,25 +7,29 @@ import { Container, Menu, Icon, Image } from "semantic-ui-react";
 
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
-    <Link onClick={logout} to="/">
-      <span className="hide-sm"> Logout</span>
-    </Link>
+    <Fragment>
+      <Menu.Item>
+        <Link to="/posts">Post</Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to="/upload_file">Upload_file</Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link onClick={logout} to="/">
+          <span className="hide-sm"> Logout</span>
+        </Link>
+      </Menu.Item>
+    </Fragment>
   );
 
   const guestLinks = (
-    <div>
-      {/* <li>
-        <a href="#!">Developers</a>
-      </li>
-      <li>
-        <Link to="register">Register</Link>
-      </li> */}
-      <Link to="/posts">Post {"   "}</Link>
-      <Link to="/upload_file">Upload_file {"   "}</Link>
-      <Link to="login">
-        <Icon name="user circle" size="big" />
-      </Link>
-    </div>
+    <Fragment>
+      <Menu.Item>
+        <Link to="login">
+          <Icon name="user circle" size="big" />
+        </Link>
+      </Menu.Item>
+    </Fragment>
   );
   return (
     <Fragment>
@@ -37,11 +41,9 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
             </Link>
           </Menu.Item>
           <Menu.Menu position="right">
-            <Menu.Item>
-              {!loading && (
-                <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-              )}
-            </Menu.Item>
+            {!loading && (
+              <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
+            )}
           </Menu.Menu>
         </Container>
       </Menu>
