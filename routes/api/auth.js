@@ -22,6 +22,42 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.post("/check_pass", 
+  [
+    // 패스워드가 존재하는지 확인한다
+    check("password", "Password is required").exists()
+  ],
+  async(req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+      return res.status(400).json({errors: errors.array()});
+    }
+    // 비밀번호 체크
+    const{password} = req.body;
+    const salt = await bcrypt.genSalt(10);
+    const check_pass = await bcrypt.hash(password, salt);
+    //확인 하기 위한 저장된 비밀번호 가져옴
+    const compare_pass = await User.findOne({password});
+
+    if(check_pass == compare_pass){
+      return res.status(200).json({success: "/api/auth/update"})
+    }else{
+      return res.status(400).json({errors: [{ msg: "Invalid Password" }]});
+    }
+
+});
+
+// 개인정보 수정을 위해 값 보내주기
+router.get("/update", auth, async (req, res) =>{
+  try{
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
+  }catch(err){
+    console.error(err.message);
+    res.status(500).send("server error");
+  }
+})
+
 // @route    POST api/auth
 // @desc     Authenticate user & get token // 유저 인증 및 토큰 발행
 // @access   Public
@@ -85,4 +121,20 @@ router.post(
     }
   }
 );
+
+
+router.patch(
+  "/" , [
+    check("name", "Name is required")
+      .not()
+      .isEmpty(),
+    check(
+      "password",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+  }
+)
 module.exports = router;
