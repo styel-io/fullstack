@@ -49,7 +49,7 @@ router.post(
         console.log("실패 ㅠㅠ");
         res, status(400).json({ msg: "Invalid Password" });
       } else {
-        console.log("성공!!!");
+        console.log("routes/api/auth.js 성공이요");
 
         const payload = {
           user: {
@@ -151,19 +151,5 @@ router.post(
   }
 );
 
-router.patch(
-  "/",
-  [
-    check("name", "Name is required")
-      .not()
-      .isEmpty(),
-    check(
-      "password",
-      "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 })
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-  }
-);
+
 module.exports = router;

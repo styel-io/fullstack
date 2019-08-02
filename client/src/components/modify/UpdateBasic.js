@@ -22,15 +22,14 @@ const UpdateBasic = ({
     isAuthenticated
     }) => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    name: user.name,
+    email: user.email,
     password: "",
-    password2: "",
-    role: ""
+    password2: ""
   });
 
   const { name, email, password, password2 } = formData;
-
+  console.log(email);
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -43,7 +42,7 @@ const UpdateBasic = ({
     }
   };
 
-  if (isAuthenticated) {
+  if (!isAuthenticated) {
     return <Redirect to="/dashboard" />;
   }
 
@@ -101,9 +100,7 @@ const UpdateBasic = ({
             </Segment>
           </Form>
           <Alert />
-          <Message>
-            Already have an account? <Link to="/login">&nbsp;Sign In</Link>
-          </Message>
+          
         </Grid.Column>
       </Grid>
     </Fragment>

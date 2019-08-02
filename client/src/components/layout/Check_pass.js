@@ -60,7 +60,7 @@ const Check_pass = ({
     <div>
       <Link to="/basic">
          <button>Basic Information</button>
-       </Link>
+      </Link>
       <Link to="/add">
         <button>Additional Information</button>
        </Link>
