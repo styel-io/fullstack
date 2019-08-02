@@ -21,18 +21,21 @@ const Check_pass = ({
 }) => {
   const [formData, setFormData] = useState({
     password: "",
-    email: user.email
+    email: user.email,
   });
+
 
   const { password, email } = formData;
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+
   const onSubmit = async e => {
     e.preventDefault();
     check(password, email);
   };
+
 
   const checkPass = (
     <Form size="large" onSubmit={e => onSubmit(e)}>
@@ -53,19 +56,15 @@ const Check_pass = ({
     </Form>
   );
 
-  const updateForm = (
-    <Form>
-      <Segment>
-        <Form.Input
-          fluid
-          type="password"
-          placeholder="Password"
-          name="password"
-          value={password}
-          onChange={e => onChange(e)}
-        />
-      </Segment>
-    </Form>
+  const updateButton = (
+    <div>
+      <Link to="/basic">
+         <button>Basic Information</button>
+       </Link>
+      <Link to="/add">
+        <button>Additional Information</button>
+       </Link>
+    </div>
   );
 
   // 로그인이 안된 경우 리다이렉트
@@ -82,7 +81,7 @@ const Check_pass = ({
           </Header>
           <Menu.Item>
             {/* {user.url ? checkPass} */}
-            {validate_checkpass ? updateForm : checkPass}
+            {validate_checkpass ? updateButton : checkPass}
           </Menu.Item>
           <Alert />
           {/* <Message id="replaceAlert">
