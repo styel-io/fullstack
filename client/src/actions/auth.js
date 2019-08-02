@@ -7,7 +7,9 @@ import {
   AUTH_ERROR,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
-  LOGOUT
+  LOGOUT,
+  CHECKPASS_SUCCESS,
+  CHECKPASS_FAIL
 } from "./types";
 import { async } from "rxjs/internal/scheduler/async";
 import { dispatch } from "rxjs/internal/observable/pairs";
@@ -66,34 +68,32 @@ export const register = ({ name, email, password, role }) => async dispatch => {
 };
 
 // check Pass
-export const check = (password, email) => async dispatch =>{
+export const check = (password, email) => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
 
-  const body = JSON.stringify({password, email});
+  const body = JSON.stringify({ password, email });
 
-  try{
+  try {
     const res = await axios.post("/api/auth/check_pass", body, config);
     dispatch({
-      type: USER_LOADED,
+      type: CHECKPASS_SUCCESS,
       payload: res.data
-    })
-    
-
-  }catch(err){
+    });
+  } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
     }
     dispatch({
-      type: LOGIN_FAIL
+      type: CHECKPASS_FAIL
     });
   }
-}
+};
 
 // Login User
 export const login = (email, password) => async dispatch => {

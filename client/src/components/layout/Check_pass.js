@@ -15,10 +15,9 @@ import {
 } from "semantic-ui-react";
 
 const Check_pass = ({
-  auth: { user },
+  auth: { user, validate_checkpass },
   check,
-  isAuthenticated,
-  url
+  isAuthenticated
 }) => {
   const [formData, setFormData] = useState({
     password: "",
@@ -26,7 +25,6 @@ const Check_pass = ({
   });
 
   const { password, email } = formData;
-
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,14 +45,10 @@ const Check_pass = ({
           value={password}
           onChange={e => onChange(e)}
         />
-        <Form.Input
-          type="hidden"
-          name="email"
-          value={user.email}
-        />
+        <Form.Input type="hidden" name="email" value={user.email} />
         <Button color="teal" fluid size="large" type="submit">
           Password Certify
-              </Button>
+        </Button>
       </Segment>
     </Form>
   );
@@ -74,8 +68,6 @@ const Check_pass = ({
     </Form>
   );
 
-
-
   // 로그인이 안된 경우 리다이렉트
   if (!isAuthenticated) {
     return <Redirect to="/" />;
@@ -90,7 +82,7 @@ const Check_pass = ({
           </Header>
           <Menu.Item>
             {/* {user.url ? checkPass} */}
-            {user.url? updateForm : checkPass}
+            {validate_checkpass ? updateForm : checkPass}
           </Menu.Item>
           <Alert />
           {/* <Message id="replaceAlert">
