@@ -46,8 +46,7 @@ export default function(state = initialState, action) {
         ...state,
         profile: null,
         repos: [],
-        loading: false,
-        validate_checkpass: false
+        loading: false
       };
     case GET_REPOS:
       return {

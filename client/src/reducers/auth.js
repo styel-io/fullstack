@@ -50,7 +50,8 @@ export default function(state = initialState, action) {
         ...state,
         token: null,
         isAuthenticated: false,
-        loading: false
+        loading: false,
+        validate_checkpass: true
         // replaceAlert: true
       };
     case CHECKPASS_SUCCESS:
