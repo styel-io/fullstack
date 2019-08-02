@@ -144,8 +144,8 @@ router.put("/modify",
       console.log(result);
       // 토큰에 저장할 user.id값을 payload 변수에 담는다.
       const payload = {
-        user: {
-          id: user.id
+        User: {
+          id: User.id
         }
       };
 
