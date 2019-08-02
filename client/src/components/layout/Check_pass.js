@@ -10,23 +10,71 @@ import {
   Grid,
   Header,
   Message,
-  Segment
+  Segment,
+  Menu
 } from "semantic-ui-react";
 
-const Check_pass = ({ check, isAuthenticated }) => {
+const Check_pass = ({
+  auth: { user },
+  check,
+  isAuthenticated,
+  url
+}) => {
   const [formData, setFormData] = useState({
-    password: ""
+    password: "",
+    email: user.email
   });
 
-  const { password } = formData;
+  const { password, email } = formData;
+
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async e => {
     e.preventDefault();
-    check(password);
+    check(password, email);
   };
+
+  const checkPass = (
+    <Form size="large" onSubmit={e => onSubmit(e)}>
+      <Segment>
+        <Form.Input
+          fluid
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={password}
+          onChange={e => onChange(e)}
+        />
+        <Form.Input
+          type="hidden"
+          name="email"
+          value={user.email}
+        />
+        <Button color="teal" fluid size="large" type="submit">
+          Password Certify
+              </Button>
+      </Segment>
+    </Form>
+  );
+
+  const updateForm = (
+    <Form>
+      <Segment>
+        <Form.Input
+          fluid
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={password}
+          onChange={e => onChange(e)}
+        />
+      </Segment>
+    </Form>
+  );
+
+
 
   // 로그인이 안된 경우 리다이렉트
   if (!isAuthenticated) {
@@ -40,21 +88,10 @@ const Check_pass = ({ check, isAuthenticated }) => {
           <Header as="h2" color="teal" textAlign="center">
             STYEL
           </Header>
-          <Form size="large" onSubmit={e => onSubmit(e)}>
-            <Segment>
-              <Form.Input
-                fluid
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={password}
-                onChange={e => onChange(e)}
-              />
-              <Button color="teal" fluid size="large" type="submit">
-                Password Certify
-              </Button>
-            </Segment>
-          </Form>
+          <Menu.Item>
+            {/* {user.url ? checkPass} */}
+            {user.url? updateForm : checkPass}
+          </Menu.Item>
           <Alert />
           {/* <Message id="replaceAlert">
             New to us? <Link to="/register">&nbsp; Sign Up</Link>
@@ -67,10 +104,12 @@ const Check_pass = ({ check, isAuthenticated }) => {
 
 Check_pass.propTypes = {
   check: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  auth: state.auth,
   isAuthenticated: state.auth.isAuthenticated
 });
 

@@ -66,17 +66,22 @@ export const register = ({ name, email, password, role }) => async dispatch => {
 };
 
 // check Pass
-export const check = (password) => async dispatch =>{
+export const check = (password, email) => async dispatch =>{
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
 
-  const body = JSON.stringify({password});
+  const body = JSON.stringify({password, email});
 
   try{
     const res = await axios.post("/api/auth/check_pass", body, config);
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data
+    })
+    
 
   }catch(err){
     const errors = err.response.data.errors;

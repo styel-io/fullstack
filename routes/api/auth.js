@@ -4,7 +4,6 @@ const auth = require("../../middleware/auth");
 const config = require("config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const userschema = require("../../models/User");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../../models/User");
@@ -36,24 +35,22 @@ router.post("/check_pass",
     try {
       // 비밀번호 체크
       const password = req.body.password;
-      console.log(password);
-      console.log(typeof(password));
-      const salt = await bcrypt.genSalt(10);
-
-      const check_pass = await bcrypt.hash(password, salt);
-      //확인 하기 위한 저장된 비밀번호 가져옴
-      const compare_pass = 'test';
-      console.log("one case");
-      console.log(check_pass);
-      console.log("two case");
-      console.log(compare_pass);
-
-      if (check_pass == compare_pass) {
-        console.log("성공!!!")
-        return res.status(200).json({ success: "/api/auth/update" })
-      } else {
+      const email = req.body.email;
+      let user = await User.findOne({email});
+      if(!user){
+        res.status(400).json({errors: [{msg:"Invalid Email"}]});
+        return;
+      }
+      console.log("----------------------------------------------------------");
+      const isMatch = await bcrypt.compare(password, user.password);
+      if(!isMatch){
         console.log("실패 ㅠㅠ");
-        return res.status(400).json({ errors: [{ msg: "Invalid Password" }] });
+        res,status(400).json({msg:"Invalid Password"});
+      }else{
+        console.log("성공!!!");
+        
+        res.status(200).json(user, { url: "/api/auth/update" });
+        
       }
     } catch(err){
       console.log(err);
