@@ -127,6 +127,17 @@ export const login = (email, password) => async dispatch => {
   }
 };
 
+// UpdateBasic
+export const updatebasic = ({ name, email, password }) => dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify({ name, email, password });
+}
+
 // Logout / Clear Profile
 export const logout = () => dispatch => {
   dispatch({
