@@ -22,41 +22,70 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.post("/check_pass", 
+router.post(
+  "/check_pass",
   [
     // 패스워드가 존재하는지 확인한다
     check("password", "Password is required").exists()
   ],
-  async(req, res) => {
+  async (req, res) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()){
-      return res.status(400).json({errors: errors.array()});
-    }
-    // 비밀번호 체크
-    const{password} = req.body;
-    const salt = await bcrypt.genSalt(10);
-    const check_pass = await bcrypt.hash(password, salt);
-    //확인 하기 위한 저장된 비밀번호 가져옴
-    const compare_pass = await User.findOne({password});
-
-    if(check_pass == compare_pass){
-      return res.status(200).json({success: "/api/auth/update"})
-    }else{
-      return res.status(400).json({errors: [{ msg: "Invalid Password" }]});
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-});
+    try {
+      // 비밀번호 체크
+      const password = req.body.password;
+      const email = req.body.email;
+      let user = await User.findOne({ email });
+      if (!user) {
+        res.status(400).json({ errors: [{ msg: "Invalid Email" }] });
+        return;
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        console.log("실패 ㅠㅠ");
+        res, status(400).json({ msg: "Invalid Password" });
+      } else {
+        console.log("routes/api/auth.js 성공이요");
+
+        const payload = {
+          user: {
+            id: user.id
+          }
+        };
+
+        // 유저 아이디값을 payload에 담고 jwt.sign함수를 활용하여 토큰을 생성하고 정상적으로 생성되면 json형식으로 클라이언트에 토큰을 전달한다.
+        jwt.sign(
+          payload,
+          config.get("jwtSecret"),
+          { expiresIn: 360000 },
+          (err, token) => {
+            if (err) throw err;
+            res.json({ token });
+          }
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
+  }
+);
 
 // 개인정보 수정을 위해 값 보내주기
-router.get("/update", auth, async (req, res) =>{
-  try{
+router.get("/update", auth, async (req, res) => {
+  try {
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);
-  }catch(err){
+  } catch (err) {
     console.error(err.message);
     res.status(500).send("server error");
   }
-})
+});
 
 // @route    POST api/auth
 // @desc     Authenticate user & get token // 유저 인증 및 토큰 발행
@@ -123,18 +152,4 @@ router.post(
 );
 
 
-router.patch(
-  "/" , [
-    check("name", "Name is required")
-      .not()
-      .isEmpty(),
-    check(
-      "password",
-      "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 })
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-  }
-)
 module.exports = router;

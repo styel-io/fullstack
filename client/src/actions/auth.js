@@ -7,7 +7,11 @@ import {
   AUTH_ERROR,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
-  LOGOUT
+  LOGOUT,
+  CHECKPASS_SUCCESS,
+  CHECKPASS_FAIL,
+  MODIFY_FAIL,
+  MODIFY_SUCCESS
 } from "./types";
 import { async } from "rxjs/internal/scheduler/async";
 import { dispatch } from "rxjs/internal/observable/pairs";
@@ -65,6 +69,34 @@ export const register = ({ name, email, password, role }) => async dispatch => {
   }
 };
 
+// check Pass
+export const check = (password, email) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify({ password, email });
+
+  try {
+    const res = await axios.post("/api/auth/check_pass", body, config);
+    dispatch({
+      type: CHECKPASS_SUCCESS,
+      payload: res.data
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
+    }
+    dispatch({
+      type: CHECKPASS_FAIL
+    });
+  }
+};
+
 // Login User
 export const login = (email, password) => async dispatch => {
   const config = {
@@ -96,6 +128,40 @@ export const login = (email, password) => async dispatch => {
     });
   }
 };
+
+// UpdateBasic
+export const updatebasic = ({ name, email, password }) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  const body = JSON.stringify({ name, email, password });
+  console.log("여기왔나요?");
+  console.log(body);
+  try {
+    const res = await axios.put("/api/users/modify", body, config);
+
+    dispatch({
+      type: MODIFY_SUCCESS,
+      payload: res.data
+    });
+
+    dispatch(loadUser());
+
+    
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
+    }
+
+    dispatch({
+      type: MODIFY_FAIL
+    });
+  }
+}
 
 // Logout / Clear Profile
 export const logout = () => dispatch => {

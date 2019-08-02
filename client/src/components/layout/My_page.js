@@ -10,7 +10,7 @@ import { getCurrentProfile } from "../../actions/profile";
 
 const My_page = ({
   getCurrentProfile,
-  auth: { user },
+  auth: { user, validate_checkpass },
   profile: { profile, loading }
 }) => {
   useEffect(() => {
@@ -22,16 +22,16 @@ const My_page = ({
   ) : (
     <Fragment>
       <h1 className="large text-primary">My_page</h1>
-      <p className="lead">
-        <i className="fas fa-user" /> Welcome {user && user.name}
-      </p>
+      <p className="lead" />
       {profile !== null ? (
         <Fragment />
       ) : (
         <Fragment>
-          <p>You have not yet setup a profile, please add some info</p>
-          <Link to="/create-profile" className="btn btn-primary my-1">
-            Create Profile
+          <img src={user.avatar} />
+          <h2>{user.email}</h2>
+          <p>{user.role}</p>
+          <Link to="/Check_pass" className="btn btn-primary my-1">
+            Update Profile
           </Link>
         </Fragment>
       )}
