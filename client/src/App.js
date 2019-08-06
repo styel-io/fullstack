@@ -4,8 +4,11 @@ import Navbar from "./components/layout/Navbar";
 import Main from "./components/layout/Main";
 import Upload_file from "./components/layout/Upload_file";
 import My_page from "./components/layout/My_page";
+import Check_pass from "./components/layout/Check_pass";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import UpdateBasic from "./components/modify/UpdateBasic";
+import UpdateAdd from "./components/modify/UpdateAdd";
 // import Alert from "./components/layout/Alert";
 // Redux
 import { Provider } from "react-redux";
@@ -35,6 +38,9 @@ const App = () => {
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/upload_file" component={Upload_file} />
                 <Route exact path="/My_page" component={My_page} />
+                <Route exact path="/Check_pass" component={Check_pass} />
+                <Route exact path="/basic" component={UpdateBasic} />
+                <Route exact path="/add" component={UpdateAdd} />
               </Switch>
               {/* <Alert /> */}
             </section>
