@@ -29,8 +29,37 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select("-password");
 
+      var re = new RegExp(/(#[0-9a-zA-Z가-힝]+)/, "g");
+
+      // 문자열 구하기
+      var searchString = req.body.text;
+      var matchArray;
+      var resultString = "<div>";
+      var first = 0;
+      var last = 0;
+
+      // 각각의 일치하는 부분 검색
+      while ((matchArray = re.exec(searchString)) != null) {
+        last = matchArray.index;
+
+        // 일치하는 모든 문자열을 연결
+        resultString += searchString.substring(first, last);
+        matchArray[0] = matchArray[0].replace(" ", "");
+        // "<a href='/api/routes/search/matchArray[0]'>" + matchArray[0] + "</a>"
+        // 일치하는 부분에 강조 스타일이 지정된 class 추가
+        resultString += "<a href='/'>" + matchArray[0] + "</a>";
+
+        first = re.lastIndex;
+        // RegExp 객체의 lastIndex 속성을 이용해 검색 결과의 마지막 인덱스 접근 가능
+      }
+
+      // 문자열 종료
+      resultString += searchString.substring(first, searchString.length);
+      resultString += "</div>";
+
       const newPost = new Post({
-        text: req.body.text,
+        text: resultString,
+        imageurl: req.body.imageurl,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id
@@ -49,7 +78,7 @@ router.post(
 // @route    GET api/posts
 // @desc     Get all post
 // @access   Private
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const posts = await Post.find().sort({ date: -1 });
     res.json(posts);
@@ -185,6 +214,7 @@ router.post(
 
       const newComment = {
         text: req.body.text,
+        imageurl: req.body.imageurl,
         name: user.name,
         avatar: user.avatar,
         user: req.user.id

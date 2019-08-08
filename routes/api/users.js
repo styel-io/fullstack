@@ -90,7 +90,8 @@ router.post(
   }
 );
 
-router.put("/modify",
+router.put(
+  "/modify",
   [
     // name값이 없거나 비어있거나, email값이 email형식이 아니거나, password가 6자리 이하면 에러 메시지를 발생시킨다.
     check("name", "Name is required")
@@ -109,7 +110,7 @@ router.put("/modify",
     }
 
     const { name, email, password } = req.body;
-    console.log('왜?');
+    console.log("왜?");
     console.log(name, email, password);
     try {
       let user = await User.findOne({ email });
@@ -140,7 +141,10 @@ router.put("/modify",
       password2 = await bcrypt.hash(password, salt);
 
       // Update
-      const result =  await User.updateOne({'email' : email}, {$set : {'name' : name, 'password' : password2}});
+      const result = await User.updateOne(
+        { email: email },
+        { $set: { name: name, password: password2 } }
+      );
       console.log(result);
       // 토큰에 저장할 user.id값을 payload 변수에 담는다.
       const payload = {
@@ -163,10 +167,10 @@ router.put("/modify",
       console.error(err.message);
       res.status(500).send("Server error");
     }
-  })
+  }
+);
 
-
-router.get('/my_page', async (req, res) => {
+router.get("/my_page", async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });

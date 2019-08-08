@@ -5,11 +5,15 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+
+require("dotenv").config();
 
 const User = require("../../models/User");
 
 // @route    GET api/auth
-// @desc     Test route
+// @desc
 // @access   Public
 router.get("/", auth, async (req, res) => {
   try {
@@ -151,5 +155,185 @@ router.post(
   }
 );
 
+// @route    POST api/auth/forgotpassword
+// @desc     send email forgotpassword
+// @access   Public
+router.post(
+  "/forgotpassword",
+  [
+    // username must be an email  // 유저네임이 이메일 형식인지 확인한다
+    check("email", "Please include a valid email").isEmail()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    if (req.body.email === "") {
+      res.json("email required");
+    }
+    const { email } = req.body;
+
+    console.log(email);
+
+    try {
+      let user = await User.findOne({ email });
+
+      if (!user) {
+        return res.status(400).json("email not in db");
+      } else {
+        // STEP 1. Generate a Token
+        // 20자까지 해쉬 토큰 생성
+        const token = crypto.randomBytes(20).toString("hex");
+        console.log(token);
+        await user.update({
+          resetPasswordToken: token,
+          resetPasswordExpires: Date.now() + 360000
+        });
+
+        // Step 2: Create Nodemailer Transport
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: `${process.env.EMAIL_ADDRESS}`,
+            pass: `${process.env.EMAIL_PASSWORD}`
+          }
+        });
+
+        // Step 3: Create Mail Options
+        const mailOptions = {
+          from: `lets.styel@gmail.com`,
+          to: `${user.email}`,
+          subject: `Link To Reset Password`,
+          text:
+            `You ar receiving this because you (or someone else) have requested the reset of the password for your account. \n\n` +
+            `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it: \n\n` +
+            `http://localhost:3000/reset/${token}\n\n` +
+            `If you did not request this, please ignore this email and your password will remain unchanged. \n`
+        };
+
+        console.log("sending email");
+
+        // Step 4: Send Mail
+        transporter.sendMail(mailOptions, function(err, response) {
+          if (err) {
+            console.error("there was an error: ", err);
+          } else {
+            console.log("here is the res: ", response);
+            res.status(200).json("recovery email sent");
+          }
+        });
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
+  }
+);
+//     await User.findOne({ email }).then(async user => {
+//       if (user === null) {
+//         console.log("email not in database");
+//         res.json("email not in db");
+//       } else {
+//         // STEP 1. Generate a Token
+//         // 20자까지 해쉬 토큰 생성
+//         const token = crypto.randomBytes(20).toString("hex");
+//         console.log(token);
+//         await user.update({
+//           resetPasswordToken: token,
+//           resetPasswordExpires: Date.now() + 360000
+//         });
+
+//         // Step 2: Create Nodemailer Transport
+//         const transporter = nodemailer.createTransport({
+//           service: "gmail",
+//           auth: {
+//             user: `${process.env.EMAIL_ADDRESS}`,
+//             pass: `${process.env.EMAIL_PASSWORD}`
+//           }
+//         });
+
+//         // Step 3: Create Mail Options
+//         const mailOptions = {
+//           from: `lets.styel@gmail.com`,
+//           to: `${user.email}`,
+//           subject: `Link To Reset Password`,
+//           text:
+//             `You ar receiving this because you (or someone else) have requested the reset of the password for your account. \n\n` +
+//             `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it: \n\n` +
+//             `http://localhost:3000/reset/${token}\n\n` +
+//             `If you did not request this, please ignore this email and your password will remain unchanged. \n`
+//         };
+
+//         console.log("sending email");
+
+//         // Step 4: Send Mail
+//         transporter.sendMail(mailOptions, function(err, response) {
+//           if (err) {
+//             console.error("there was an error: ", err);
+//           } else {
+//             console.log("here is the res: ", response);
+//             res.status(200).json("recovery email sent");
+//           }
+//         });
+//       }
+//     });
+//   }
+// );
+
+router.get("/reset", async (req, res) => {
+  console.log(req.query.resetPasswordToken);
+  await User.findOne({
+    resetPasswordToken: req.query.resetPasswordToken,
+    resetPasswordExpires: {
+      $gt: Date.now()
+    }
+  }).then(user => {
+    if (user === null) {
+      console.log("password reset link is invalid or has expired");
+      res.json("password reset link is invalid or has expired");
+    } else {
+      res.status(200).send({
+        email: user.email,
+        message: "password reset link a-ok"
+      });
+    }
+  });
+});
+
+router.put("/updatePasswordViaEmail", async (req, res) => {
+  console.log(req.body.password);
+  console.log(req.body.email);
+  const { email, password } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (user !== null) {
+      console.log("user exists in db");
+
+      const salt = await bcrypt.genSalt(10);
+      // 요청받은 패스워드값과 salt를 이용하여 해쉬화 하고 user.password에 담는다.
+      user.password = await bcrypt.hash(password, salt);
+
+      await user.updateOne({
+        password: user.password,
+        resetPasswordToken: null,
+        resetPasswordExpires: null
+      });
+
+      console.log("password updated");
+      res.status(200).send({ message: "password updated" });
+    } else {
+      console.log("no user exists in db to update");
+      res.status(404).json("no user exists in db to update");
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
 
 module.exports = router;

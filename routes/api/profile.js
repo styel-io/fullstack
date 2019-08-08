@@ -16,7 +16,7 @@ router.get("/me", auth, async (req, res) => {
     // 요청받은 유저 값을 데이터베이스에서 찾고 populate를 실행하여 담는다. 몽구스 메소드 함수인 populate에 대한 이해는 https://www.zerocho.com/category/MongoDB/post/59a66f8372262500184b5363 를 읽어보자.
     const profile = await Profile.findOne({ user: req.user.id }).populate(
       "user",
-      ["name", "avatar"]
+      [("name", "avatar")]
     );
 
     // 만약 프로파일이 없으면 상태값 400과 메시지를 클라이언트에게 전달한다
@@ -27,6 +27,29 @@ router.get("/me", auth, async (req, res) => {
     res.json(profile);
   } catch (err) {
     console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    Get api/profile/user/:user_id
+// @desc     Get profile by user ID  // 시멘틱 url로 전달받은 user_id값으로 프로파일 가져오기
+// @access   Public
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    console.log("get user profile by id");
+    const profile = await Profile.findOne({
+      user: req.params.user_id
+    }).populate("user", ["name", "avatar"]);
+
+    if (!profile) return res.status(400).json({ msg: "Profile not found" });
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === "ObjectId") {
+      return res.status(400).json({ msg: "Profile not found" });
+    }
     res.status(500).send("Server Error");
   }
 });
@@ -69,7 +92,6 @@ router.post(
 
     if (website) profileFields.website = website;
     if (location) profileFields.location = location;
-
     if (status) profileFields.status = status;
 
     // Build social object
@@ -80,10 +102,13 @@ router.post(
     if (linkdin) profileFields.social.linkdin = linkdin;
     if (instagram) profileFields.social.instagram = instagram;
 
+    console.log(profileFields);
+
     try {
       // Profile 컬렉션에서 요청된 유저아이디를 찾아 profile변수에 담는다.
-      const profile = await Profile.findOne({ user: req.user.id });
+      let profile = await Profile.findOne({ user: req.user.id });
 
+      console.log(profile);
       // 만약 프로파일이 존재하면 업데이트한다.
       if (profile) {
         // Update
@@ -99,6 +124,7 @@ router.post(
       // Create
       profile = new Profile(profileFields);
 
+      console.log(profile);
       await profile.save();
       res.json(profile);
     } catch (err) {
@@ -117,28 +143,6 @@ router.get("/", async (req, res) => {
     res.json(profile);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
-
-// @route    Get api/profile/user/:user_id
-// @desc     Get profile by user ID  // 시멘틱 url로 전달받은 user_id값으로 프로파일 가져오기
-// @access   Public
-router.get("/user/:user_id", async (req, res) => {
-  try {
-    const profile = await Profile.findOne({
-      user: req.params.user_id
-    }).populate("user", ["name", "avatar"]);
-
-    if (!profile) return res.status(400).json({ msg: "Profile not found" });
-
-    res.json(profile);
-  } catch (err) {
-    console.error(err.message);
-
-    if (err.kind === "ObjectId") {
-      return res.status(400).json({ msg: "Profile not found" });
-    }
     res.status(500).send("Server Error");
   }
 });
