@@ -1,0 +1,24 @@
+.FeedBox_action-box {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+@media only screen and (max-width: 767px) {
+  .FeedBox_action-box {
+    width: 100%;
+    position: relative;
+  }
+}
+
+.FeedBox_like-box {
+  width: 100%;
+  height: 50px;
+  border-top: 1px solid lightgray;
+}
+
+.FeedBox_comment-box {
+  width: 100%;
+  height: 50px;
+  border-top: 1px solid lightgray;
+}

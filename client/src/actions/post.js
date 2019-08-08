@@ -8,8 +8,29 @@ import {
   ADD_POST,
   GET_POST,
   ADD_COMMENT,
-  REMOVE_COMMENT
+  REMOVE_COMMENT,
+  ADD_POST_STANDBY
 } from "./types";
+
+// Upload media
+export const addPostStandby = ({
+  imageurl,
+  text,
+  location,
+  styel
+}) => dispatch => {
+  let data = {
+    text: text,
+    styel: styel,
+    location: location,
+    imageurl: imageurl
+  };
+
+  dispatch({
+    type: ADD_POST_STANDBY,
+    payload: data
+  });
+};
 
 // Get posts
 export const getPosts = () => async dispatch => {

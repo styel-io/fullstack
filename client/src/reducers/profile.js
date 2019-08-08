@@ -15,7 +15,7 @@ const initialState = {
   error: {}
 };
 
-export default function(state = initialState, action) {
+export default function profile(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -24,22 +24,19 @@ export default function(state = initialState, action) {
       return {
         ...state,
         profile: payload,
-        loading: false,
-        validate_checkpass: false
+        loading: false
       };
     case GET_PROFILES:
       return {
         ...state,
         profiles: payload,
-        loading: false,
-        validate_checkpass: false
+        loading: false
       };
     case PROFILE_ERROR:
       return {
         ...state,
         error: payload,
-        loading: false,
-        validate_checkpass: false
+        loading: false
       };
     case CLEAR_PROFILE:
       return {

@@ -1,0 +1,22 @@
+.ui[class*="top fixed"].menu {
+  border-bottom: none;
+}
+
+.ui.fixed.menu,
+.ui[class*="top fixed"].menu {
+  left: auto;
+}
+
+.ui.menu.fixed {
+  max-width: 960px;
+}
+
+.headerSpace {
+  height: 80px;
+}
+@media only screen and (max-width: 767px) {
+  .ui.fixed.menu,
+  .ui[class*="top fixed"].menu {
+    left: 0 !important;
+  }
+}

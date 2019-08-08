@@ -1,0 +1,17 @@
+/* .NewPostBox {
+  border: 1px solid rgb(238, 238, 238);
+  height: 600px;
+}
+@media only screen and (max-width: 767px) {
+  .NewPostBox {
+    border: 0px solid rgb(238, 238, 238);
+  }
+} */
+
+.makeStyles-root-1 {
+  margin: 0 auto;
+}
+
+.NewPost_navBtn {
+  text-align: center;
+}

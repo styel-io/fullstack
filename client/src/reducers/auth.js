@@ -17,10 +17,10 @@ const initialState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   loading: true,
-  user: null
+  user: {}
 };
 
-export default function(state = initialState, action) {
+export default (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -29,7 +29,6 @@ export default function(state = initialState, action) {
         ...state,
         isAuthenticated: true,
         loading: false,
-        validate_checkpass: false,
         user: payload
       };
     case REGISTER_SUCCESS:
@@ -54,10 +53,10 @@ export default function(state = initialState, action) {
         ...state,
         token: null,
         isAuthenticated: false,
-        loading: false,
-        validate_checkpass: true
+        loading: false
         // replaceAlert: true
       };
+
     case CHECKPASS_SUCCESS:
       localStorage.setItem("token", payload.token);
       return {
@@ -70,4 +69,4 @@ export default function(state = initialState, action) {
     default:
       return state;
   }
-}
+};

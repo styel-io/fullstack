@@ -1,0 +1,45 @@
+.feedBox {
+  border: 1px solid rgb(238, 238, 238);
+}
+@media only screen and (max-width: 767px) {
+  .feedBox {
+    border: 0px solid rgb(238, 238, 238);
+  }
+}
+
+.ui.grid {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ui.grid > .column:not(.row) {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.ui.grid > .row {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.ui.grid > .column:not(.row),
+.ui.grid > .row > .column {
+  position: relative;
+  display: inline-block;
+
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.FeedBox_info-container {
+  position: relative !important;
+}
+@media only screen and (max-width: 767px) {
+  .FeedBox_info-container {
+    position: relative;
+    padding-left: 0px;
+  }
+}

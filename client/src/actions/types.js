@@ -22,6 +22,7 @@ export const DELETE_POST = "DELETE_POST";
 export const ADD_POST = "ADD_POST";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
+export const ADD_POST_STANDBY = "ADD_POST_STANDBY";
 
 export const CHECKPASS_SUCCESS = "CHECKPASS_SUCCESS";
 export const CHECKPASS_FAIL = "CHECKPASS_FAIL";

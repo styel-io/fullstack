@@ -1,0 +1,22 @@
+.FeedBox_caption {
+  position: absolute;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  overflow-y: scroll;
+  height: calc(100% - 182px);
+  -ms-overflow-style: none;
+}
+.FeedBox_caption:hover {
+  overflow-y: scroll;
+}
+
+@media only screen and (max-width: 767px) {
+  .FeedBox_caption {
+    position: relative;
+    height: 300px;
+  }
+  .FeedBox_caption:hover {
+    overflow-y: scroll;
+  }
+}

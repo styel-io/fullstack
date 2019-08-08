@@ -6,17 +6,19 @@ import {
   ADD_POST,
   GET_POST,
   ADD_COMMENT,
-  REMOVE_COMMENT
-} from '../actions/types';
+  REMOVE_COMMENT,
+  ADD_POST_STANDBY
+} from "../actions/types";
 
 const initialState = {
   posts: [],
   post: null,
   loading: true,
+  standby: {},
   error: {}
 };
 
-export default function(state = initialState, action) {
+export default (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -36,8 +38,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         posts: [payload, ...state.posts],
-        loading: false
+        loading: false,
+        standby: {}
       };
+    case ADD_POST_STANDBY:
+      return { ...state, standby: payload };
     case DELETE_POST:
       return {
         ...state,
@@ -78,4 +83,4 @@ export default function(state = initialState, action) {
     default:
       return state;
   }
-}
+};

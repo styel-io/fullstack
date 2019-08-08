@@ -1,0 +1,19 @@
+.NewPostBox_username {
+  padding-left: 1rem;
+}
+@media only screen and (max-width: 767px) {
+  .NewPostBox_username {
+    padding-left: 0px;
+  }
+}
+
+.NewPostBox_user-info {
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  padding-left: 0rem;
+  padding-right: 0rem;
+}
+@media only screen and (max-width: 767px) {
+  .NewPostBox_user-info {
+  }
+}

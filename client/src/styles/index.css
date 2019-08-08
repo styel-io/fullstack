@@ -1,0 +1,48 @@
+.ui.teal.header {
+  color: #2e2e2e !important;
+}
+.ui.teal.button,
+.ui.teal.buttons .button {
+  background-color: #8d8d8d;
+}
+.ui.teal.button:hover,
+.ui.teal.buttons .button {
+  background-color: #4d4d4d;
+}
+
+.sigColor {
+  color: #22b573;
+}
+
+.sigBgColor {
+  background-color: #22b573;
+}
+
+.alert {
+  max-width: 350px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.signform {
+  margin-top: 70px;
+}
+
+.mainFrame {
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.ui.form textarea {
+  border: 0px;
+  resize: none;
+}
+
+.MuiInput-underline:after {
+  border-bottom: 2px solid #22b573 !important;
+}
+
+.MuiInput-underline:hover:not(.Mui-disabled):before {
+  border-bottom: 2px solid #22b573 !important;
+}

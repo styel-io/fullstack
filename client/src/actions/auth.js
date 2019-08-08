@@ -13,8 +13,6 @@ import {
   MODIFY_FAIL,
   MODIFY_SUCCESS
 } from "./types";
-import { async } from "rxjs/internal/scheduler/async";
-import { dispatch } from "rxjs/internal/observable/pairs";
 import setAuthToken from "../utils/setAuthToken";
 
 // Load User
@@ -69,6 +67,37 @@ export const register = ({ name, email, password, role }) => async dispatch => {
   }
 };
 
+// Login User
+export const login = (email, password) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify({ email, password });
+
+  try {
+    const res = await axios.post("/api/auth", body, config);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data
+    });
+
+    dispatch(loadUser());
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
+    }
+    dispatch({
+      type: LOGIN_FAIL
+    });
+  }
+};
+
 // check Pass
 export const check = (password, email) => async dispatch => {
   const config = {
@@ -97,38 +126,6 @@ export const check = (password, email) => async dispatch => {
   }
 };
 
-// Login User
-export const login = (email, password) => async dispatch => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-
-  const body = JSON.stringify({ email, password });
-
-  try {
-    const res = await axios.post("/api/auth", body, config);
-
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: res.data
-    });
-    console.log("payload");
-
-    dispatch(loadUser());
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
-    }
-    dispatch({
-      type: LOGIN_FAIL
-    });
-  }
-};
-
 // UpdateBasic
 export const updatebasic = ({ name, email, password }) => async dispatch => {
   const config = {
@@ -148,8 +145,6 @@ export const updatebasic = ({ name, email, password }) => async dispatch => {
     });
 
     dispatch(loadUser());
-
-    
   } catch (err) {
     const errors = err.response.data.errors;
 
@@ -161,7 +156,7 @@ export const updatebasic = ({ name, email, password }) => async dispatch => {
       type: MODIFY_FAIL
     });
   }
-}
+};
 
 // Logout / Clear Profile
 export const logout = () => dispatch => {

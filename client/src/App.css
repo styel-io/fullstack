@@ -1,76 +1,91 @@
 a {
-  color: #2e2e2e;
-}
-a:hover {
   color: #8d8d8d;
 }
-
-.ui.teal.header {
-  color: #2e2e2e !important;
-}
-.ui.teal.button,
-.ui.teal.buttons .button {
-  background-color: #8d8d8d;
-}
-.ui.teal.button:hover,
-.ui.teal.buttons .button {
-  background-color: #4d4d4d;
-}
-.sigColor {
-  color: #22b573;
+a:hover {
+  color: #2e2e2e;
 }
 
-.sigBgColor {
-  background-color: #22b573;
+::-webkit-scrollbar {
+  display: none;
 }
 
-.alert {
-  max-width: 350px;
-  width: 100%;
-  margin: 0 auto;
+body {
+  font-size: 16px;
 }
 
-.headerSpace {
-  height: 80px;
+ol,
+ul {
+  list-style: none;
+}
+@media only screen and (max-width: 767px) {
+  body {
+    margin-right: 16px !important;
+    margin-left: 16px !important;
+  }
 }
 
-.signform {
-  margin-top: 30px;
+@media only screen and (max-width: 767px) {
+  .ui.stackable.grid {
+    margin: 0 auto;
+  }
+  .ui.grid > .stackable.stackable.row > .column,
+  .ui.stackable.grid > .column.grid > .column,
+  .ui.stackable.grid > .column.row > .column,
+  .ui.stackable.grid > .column:not(.row),
+  .ui.stackable.grid > .row > .column,
+  .ui.stackable.grid > .row > .wide.column,
+  .ui.stackable.grid > .wide.column {
+    width: 100% !important;
+    margin: 0 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
 }
 
-.mainFrame {
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
+@media only screen and (max-width: 991px) and (min-width: 768px) {
+  .ui.container {
+    width: 933px;
+  }
 }
 
-.feedBox {
-  border: 0 solid lightgray;
+@media only screen and (max-width: 767px) {
+  .ui.grid > .stackable.stackable.row > .column,
+  .ui.stackable.grid > .column.grid > .column,
+  .ui.stackable.grid > .column.row > .column,
+  .ui.stackable.grid > .column:not(.row),
+  .ui.stackable.grid > .row > .column,
+  .ui.stackable.grid > .row > .wide.column,
+  .ui.stackable.grid > .wide.column {
+    max-width: 600px;
+    width: 100% !important;
+    margin: 0 0 !important;
+    box-shadow: none !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
 }
 
-.feedImage {
-  width: 600px;
-  display: inline-block;
+.ui.form input[type="text"] {
+  border: 0px !important;
+  padding-top: 1.5rem !important;
 }
 
-.feedContent {
-  width: 298px;
-  display: inline-block;
+.ui.form input[type="email"] {
+  border: 0px !important;
+  padding-top: 1.5rem !important;
 }
 
-.feedSpace {
-  height: 50px;
+.ui.form input[type="password"] {
+  border: 0px !important;
+  padding-top: 1.5rem !important;
 }
 
-.ui[class*="top fixed"].menu {
-  border-bottom: none;
-}
-
-.ui.fixed.menu,
-.ui[class*="top fixed"].menu {
-  left: auto;
-}
-
-.ui.menu.fixed {
-  max-width: 900px;
+.MuiFormLabel-root.Mui-focused {
+  color: #22b573 !important;
 }
