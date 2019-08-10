@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Fragment } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./layout/Navbar";
 import Feed from "./layout/Feed";
@@ -12,14 +12,14 @@ import store from "./store";
 import { loadUser } from "./actions/auth";
 import setAuthToken from "./utils/setAuthToken";
 
-import "./App.css";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+
 import "./styles/index.css";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
-
-
 
 const App = () => {
   useEffect(() => {
@@ -28,15 +28,17 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <Router>
-        <div className="mainFrame">
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Router>
           <Navbar />
+          <div style={{ height: "100px" }} />
           <Switch>
             <Route exact path="/" component={Feed} />
             <Route component={Routes} />
           </Switch>
-        </div>
-      </Router>
+        </Router>
+      </Container>
     </Provider>
   );
 };
