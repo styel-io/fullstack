@@ -97,16 +97,23 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const AdapterLink = React.forwardRef((props, ref) => (
+  <Link innerRef={ref} {...props} />
+));
+
 const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
   const classes = useStyles();
 
   const authLinks = (
     <Fragment>
-      <Link to="/newpost">
-        <IconButton className={classes.button}>
-          <i class="material-icons md-36">add_circle_outline</i>
-        </IconButton>
-      </Link>
+      <IconButton
+        component={AdapterLink}
+        to="/newpost"
+        className={classes.button}
+      >
+        <i class="fas fa-plus" />
+      </IconButton>
+
       <Link to={`/pf/${user.name}`}>
         <Avatar src={user.avatar} avatar size="mini" />
       </Link>
@@ -114,11 +121,13 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
   );
 
   const guestLinks = (
-    <Link to="/login">
-      <IconButton className={classes.button}>
-        <i class="fas fa-user-alt" />
-      </IconButton>
-    </Link>
+    <Fragment>
+      <Link to="/login">
+        <IconButton className={classes.button}>
+          <i class="fas fa-user-alt" />
+        </IconButton>
+      </Link>
+    </Fragment>
   );
 
   return (

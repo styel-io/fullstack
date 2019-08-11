@@ -188,9 +188,9 @@ router.post(
         // 20자까지 해쉬 토큰 생성
         const token = crypto.randomBytes(20).toString("hex");
         console.log(token);
-        await user.update({
+        await user.updateOne({
           resetPasswordToken: token,
-          resetPasswordExpires: Date.now() + 360000
+          resetPasswordExpires: Date.now() + 3600000
         });
 
         // Step 2: Create Nodemailer Transport
@@ -210,7 +210,7 @@ router.post(
           text:
             `You ar receiving this because you (or someone else) have requested the reset of the password for your account. \n\n` +
             `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it: \n\n` +
-            `https://styel.io/reset/${token}\n\n` +
+            `http://localhost:3000/reset/${token}\n\n` +
             `If you did not request this, please ignore this email and your password will remain unchanged. \n`
         };
 
@@ -243,11 +243,13 @@ router.get("/reset", async (req, res) => {
   }).then(user => {
     if (user === null) {
       console.log("password reset link is invalid or has expired");
-      res.json("password reset link is invalid or has expired");
+      res.status(400).json({
+        errors: [{ msg: "password reset link is invalid or has expired" }]
+      });
     } else {
+      console.log(user);
       res.status(200).send({
-        email: user.email,
-        message: "password reset link a-ok"
+        user: { email: user.email }
       });
     }
   });

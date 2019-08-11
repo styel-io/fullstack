@@ -11,7 +11,8 @@ import {
   CHECKPASS_SUCCESS,
   CHECKPASS_FAIL,
   MODIFY_FAIL,
-  MODIFY_SUCCESS
+  MODIFY_SUCCESS,
+  GET_USEREMAIL
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -169,6 +170,57 @@ export const forgotPassword = email => async dispatch => {
   try {
     const res = await axios.post("/api/auth/forgotpassword", email, config);
     dispatch(setAlert(res.data, "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
+    }
+  }
+};
+
+// updatePassword
+export const updatePassword = ({ email, password }) => async dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  const body = JSON.stringify({ email, password });
+
+  try {
+    const res = await axios.put(
+      "/api/auth/updatePasswordViaEmail",
+      body,
+      config
+    );
+    dispatch(setAlert(res.data, "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
+    }
+  }
+};
+
+// getResetPasswordToken
+export const getResetPasswordToken = token => async dispatch => {
+  try {
+    // console.log(token);
+    const res = await axios.get(`/api/auth/reset/`, {
+      params: {
+        resetPasswordToken: token
+      }
+    });
+
+    dispatch({
+      type: GET_USEREMAIL,
+      payload: res.data
+    });
+
+    dispatch(setAlert(res.data, "negative"));
   } catch (err) {
     const errors = err.response.data.errors;
 

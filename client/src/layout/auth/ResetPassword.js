@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Alert from "../Alert";
+import { updatePassword, getResetPasswordToken } from "../../actions/auth";
+
 import TextField from "@material-ui/core/TextField";
 
 import Button from "@material-ui/core/Button";
@@ -62,16 +64,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ResetPassword = ({ isAuthenticated }) => {
+const ResetPassword = ({
+  getResetPasswordToken,
+  updatePassword,
+  isAuthenticated,
+  match
+}) => {
+  useEffect(() => {
+    getResetPasswordToken(match.params.token);
+  }, [getResetPasswordToken]);
+
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
     email: "",
     password: "",
-    confirmPassword: "",
-    update: false,
-    isLoading: true,
-    error: false
+    token: match.params.token
   });
 
   const handleChange = name => event => {
@@ -80,37 +88,18 @@ const ResetPassword = ({ isAuthenticated }) => {
     });
   };
 
+  const { email, password, token } = values;
+
   //   The Update Password Function
-  const updatePassword = async e => {
+  const updatePW = async e => {
     e.preventDefault();
-    axios
-      .put("/api/auth/updatePasswordViaEmail", {
-        email: this.state.email,
-        password: this.state.password
-      })
-      .then(response => {
-        console.log(response.data);
-        if (response.data.message === "password updated") {
-          this.setState({
-            updated: true,
-            error: false
-          });
-        } else {
-          this.setState({
-            updated: false,
-            error: true
-          });
-        }
-      })
-      .catch(error => {
-        console.log(error.data);
-      });
+    updatePassword({ email, password });
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <form className={classes.container} onSubmit={updatePassword}>
+      <form className={classes.container} onSubmit={updatePW}>
         <TextField
           fullWidth
           id="resetPassword"
@@ -133,6 +122,9 @@ const ResetPassword = ({ isAuthenticated }) => {
         >
           Update Password
         </Button>
+        <div>
+          <h2>{match.params.token}</h2>
+        </div>
       </form>
       <Alert />
     </Container>
@@ -296,7 +288,8 @@ const ResetPassword = ({ isAuthenticated }) => {
 // }
 
 ResetPassword.propTypes = {
-  // forgotPassword: PropTypes.func.isRequired,
+  updatePassword: PropTypes.func.isRequired,
+  getResetPasswordToken: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool
 };
 
@@ -306,5 +299,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { getResetPasswordToken, updatePassword }
 )(ResetPassword);

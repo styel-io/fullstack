@@ -71,7 +71,7 @@ const ForgotPassword = ({ forgotPassword, isAuthenticated }) => {
   const { email } = values;
 
   // 이벤트 발생시 e(이벤트)값을 인자로 받아 이메일을 보내는 함수
-  const sendEmail = e => {
+  const sendEmail = async e => {
     e.preventDefault();
     forgotPassword({ email });
   };

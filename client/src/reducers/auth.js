@@ -10,7 +10,8 @@ import {
   CHECKPASS_SUCCESS,
   CHECKPASS_FAIL,
   MODIFY_SUCCESS,
-  MODIFY_FAIL
+  MODIFY_FAIL,
+  GET_USEREMAIL
 } from "../actions/types";
 
 const initialState = {
@@ -26,6 +27,7 @@ export default (state = initialState, action) => {
 
   switch (type) {
     case USER_LOADED:
+    case GET_USEREMAIL:
       return {
         ...state,
         isAuthenticated: true,
