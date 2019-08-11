@@ -10,7 +10,6 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -98,7 +97,7 @@ const Login = ({ login, isAuthenticated }) => {
             className={classes.textField}
             value={values.email}
             onChange={handleChange("email")}
-            autoFocus
+            // autoFocus
           />
           <TextField
             fullWidth
@@ -109,7 +108,7 @@ const Login = ({ login, isAuthenticated }) => {
             className={classes.textField}
             value={values.password}
             onChange={handleChange("password")}
-            autoComplete="current-password"
+            // autoComplete="current-password"
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}

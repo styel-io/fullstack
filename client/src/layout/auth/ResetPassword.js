@@ -1,22 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Fragment } from "react";
 import axios from "axios";
-import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Alert from "../Alert";
-import { updatePassword, getResetPasswordToken } from "../../actions/auth";
-
+import { getResetPasswordToken } from "../../actions/auth";
+import { setAlert } from "../../actions/alert";
 import TextField from "@material-ui/core/TextField";
 
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { withStyles } from "@material-ui/core/styles";
 
-const loading = {
-  margin: "1rem",
-  fontsize: "24px"
-};
+const ColorLinearProgress = withStyles({
+  colorPrimary: {
+    backgroundColor: "#cedfd6;"
+  },
+  barColorPrimary: {
+    backgroundColor: "#22b573;"
+  }
+})(LinearProgress);
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -67,39 +72,58 @@ const useStyles = makeStyles(theme => ({
 const ResetPassword = ({
   getResetPasswordToken,
   updatePassword,
-  isAuthenticated,
-  match
+  match,
+  auth: { user },
+  isAuthenticated
 }) => {
   useEffect(() => {
     getResetPasswordToken(match.params.token);
-  }, [getResetPasswordToken]);
+  }, [getResetPasswordToken, match.params.token]);
 
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
-    email: "",
-    password: "",
-    token: match.params.token
+    email: user.email,
+    password: ""
   });
 
   const handleChange = name => event => {
-    setValues({
-      [name]: event.target.value
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  const { password, email } = values;
+
+  // //   The Update Password Function
+  // const onSubmit = async e => {
+  //   e.preventDefault();
+  //   updatePassword({ password, email });
+  // };
+  //   The Update Password Function
+  const onSubmit = async e => {
+    await axios.put("/api/auth/updatePasswordViaEmail", {
+      email: user.email,
+      password: password
     });
   };
 
-  const { email, password, token } = values;
-
-  //   The Update Password Function
-  const updatePW = async e => {
-    e.preventDefault();
-    updatePassword({ email, password });
-  };
-
-  return (
+  return !isAuthenticated && !user.email ? (
+    <Fragment>
+      <ColorLinearProgress />
+      <Alert />
+    </Fragment>
+  ) : (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <form className={classes.container} onSubmit={updatePW}>
+      <form className={classes.container} onSubmit={e => onSubmit(e)}>
+        <TextField
+          disabled
+          label="Email"
+          fullWidth
+          name="email"
+          className={classes.textField}
+          value={user.email}
+        />
+
         <TextField
           fullWidth
           id="resetPassword"
@@ -118,13 +142,9 @@ const ResetPassword = ({
           color="inherit"
           size="large"
           className={classes.submit}
-          type="submit"
         >
           Update Password
         </Button>
-        <div>
-          <h2>{match.params.token}</h2>
-        </div>
       </form>
       <Alert />
     </Container>
@@ -288,16 +308,17 @@ const ResetPassword = ({
 // }
 
 ResetPassword.propTypes = {
-  updatePassword: PropTypes.func.isRequired,
   getResetPasswordToken: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  isAuthenticated: PropTypes.bool,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
+  auth: state.auth
 });
 
 export default connect(
   mapStateToProps,
-  { getResetPasswordToken, updatePassword }
+  { getResetPasswordToken }
 )(ResetPassword);

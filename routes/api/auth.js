@@ -234,25 +234,43 @@ router.post(
 );
 
 router.get("/reset", async (req, res) => {
-  console.log(req.query.resetPasswordToken);
-  await User.findOne({
-    resetPasswordToken: req.query.resetPasswordToken,
-    resetPasswordExpires: {
-      $gt: Date.now()
-    }
-  }).then(user => {
-    if (user === null) {
+  try {
+    console.log(req.query.resetPasswordToken);
+
+    const user = await User.findOne({
+      resetPasswordToken: req.query.resetPasswordToken,
+      resetPasswordExpires: {
+        $gt: Date.now()
+      }
+    }).select("-password");
+
+    if (!user) {
       console.log("password reset link is invalid or has expired");
       res.status(400).json({
         errors: [{ msg: "password reset link is invalid or has expired" }]
       });
+      return;
     } else {
-      console.log(user);
-      res.status(200).send({
-        user: { email: user.email }
-      });
+      const payload = {
+        user: {
+          id: user.id
+        }
+      };
+
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 360000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     }
-  });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 router.put("/updatePasswordViaEmail", async (req, res) => {

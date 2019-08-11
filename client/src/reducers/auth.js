@@ -27,7 +27,6 @@ export default (state = initialState, action) => {
 
   switch (type) {
     case USER_LOADED:
-    case GET_USEREMAIL:
       return {
         ...state,
         isAuthenticated: true,
@@ -38,6 +37,7 @@ export default (state = initialState, action) => {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
     case MODIFY_SUCCESS:
+    case GET_USEREMAIL:
       localStorage.setItem("token", payload.token);
       return {
         ...state,

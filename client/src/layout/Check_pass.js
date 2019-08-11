@@ -69,13 +69,13 @@ const Check_pass = ({
       <TextField
         disabled
         label="Email"
-        fullWidth="true"
+        fullWidth
         name="email"
         className={classes.textField}
         value={user.email}
       />
       <TextField
-        fullWidth="true"
+        fullWidth
         id="standard-password"
         label="Password"
         type="password"
@@ -83,12 +83,11 @@ const Check_pass = ({
         className={classes.textField}
         value={values.password}
         onChange={handleChange("password")}
-        margin="normal"
       />
 
       <Button
         size="large"
-        fullWidth="true"
+        fullWidth
         variant="outlined"
         type="submit"
         color="primary"

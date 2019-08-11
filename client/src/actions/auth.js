@@ -135,8 +135,7 @@ export const updatebasic = ({ name, email, password }) => async dispatch => {
     }
   };
   const body = JSON.stringify({ name, email, password });
-  console.log("여기왔나요?");
-  console.log(body);
+
   try {
     const res = await axios.put("/api/users/modify", body, config);
 
@@ -179,48 +178,22 @@ export const forgotPassword = email => async dispatch => {
   }
 };
 
-// updatePassword
-export const updatePassword = ({ email, password }) => async dispatch => {
-  const config = {
-    headers: {
-      "Content-Type": "application/json"
-    }
-  };
-
-  const body = JSON.stringify({ email, password });
-
-  try {
-    const res = await axios.put(
-      "/api/auth/updatePasswordViaEmail",
-      body,
-      config
-    );
-    dispatch(setAlert(res.data, "success"));
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
-    }
-  }
-};
-
 // getResetPasswordToken
 export const getResetPasswordToken = token => async dispatch => {
   try {
     // console.log(token);
-    const res = await axios.get(`/api/auth/reset/`, {
+    const res = await axios.get("/api/auth/reset/", {
       params: {
         resetPasswordToken: token
       }
     });
-
+    console.log(res.data);
     dispatch({
       type: GET_USEREMAIL,
       payload: res.data
     });
 
-    dispatch(setAlert(res.data, "negative"));
+    dispatch(loadUser());
   } catch (err) {
     const errors = err.response.data.errors;
 
