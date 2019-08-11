@@ -3,8 +3,8 @@ import axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Alert from "../Alert";
-import { getResetPasswordToken } from "../../actions/auth";
-import { setAlert } from "../../actions/alert";
+import { updatePassword, getResetPasswordToken } from "../../actions/auth";
+
 import TextField from "@material-ui/core/TextField";
 
 import Button from "@material-ui/core/Button";
@@ -93,23 +93,22 @@ const ResetPassword = ({
 
   const { password, email } = values;
 
-  // //   The Update Password Function
-  // const onSubmit = async e => {
-  //   e.preventDefault();
-  //   updatePassword({ password, email });
-  // };
   //   The Update Password Function
   const onSubmit = async e => {
-    await axios.put("/api/auth/updatePasswordViaEmail", {
-      email: user.email,
-      password: password
-    });
+    e.preventDefault();
+    updatePassword({ password, email: user.email });
   };
+  //   The Update Password Function
+  // const onSubmit = async e => {
+  //   axios.put("/api/auth/updatePasswordViaEmail", {
+  //     email: user.email,
+  //     password: password
+  //   });
+  // };
 
   return !isAuthenticated && !user.email ? (
     <Fragment>
-      <ColorLinearProgress />
-      <Alert />
+      <ColorLinearProgress /> <Alert />
     </Fragment>
   ) : (
     <Container component="main" maxWidth="xs">
@@ -117,9 +116,7 @@ const ResetPassword = ({
       <form className={classes.container} onSubmit={e => onSubmit(e)}>
         <TextField
           disabled
-          label="Email"
           fullWidth
-          name="email"
           className={classes.textField}
           value={user.email}
         />
@@ -308,6 +305,7 @@ const ResetPassword = ({
 // }
 
 ResetPassword.propTypes = {
+  updatePassword: PropTypes.func.isRequired,
   getResetPasswordToken: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
   auth: PropTypes.object.isRequired
@@ -320,5 +318,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getResetPasswordToken }
+  { getResetPasswordToken, updatePassword }
 )(ResetPassword);

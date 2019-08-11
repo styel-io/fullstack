@@ -295,10 +295,12 @@ router.put("/updatePasswordViaEmail", async (req, res) => {
       });
 
       console.log("password updated");
-      res.status(200).send({ message: "password updated" });
+      res.status(200).send({ msg: "password updated" });
     } else {
       console.log("no user exists in db to update");
-      res.status(404).json("no user exists in db to update");
+      res
+        .status(400)
+        .json({ errors: [{ msg: "no user exists in db to update" }] });
     }
   } catch (err) {
     console.error(err.message);
