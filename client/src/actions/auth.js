@@ -158,6 +158,26 @@ export const updatebasic = ({ name, email, password }) => async dispatch => {
   }
 };
 
+// ForgotPassword
+export const forgotPassword = email => async dispatch => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+
+  try {
+    const res = await axios.post("/api/auth/forgotpassword", email, config);
+    dispatch(setAlert(res.data, "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "negative")));
+    }
+  }
+};
+
 // Logout / Clear Profile
 export const logout = () => dispatch => {
   dispatch({

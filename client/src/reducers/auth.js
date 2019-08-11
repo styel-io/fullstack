@@ -17,7 +17,8 @@ const initialState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   loading: true,
-  user: {}
+  user: {},
+  forgotPassword: false
 };
 
 export default (state = initialState, action) => {
@@ -31,6 +32,7 @@ export default (state = initialState, action) => {
         loading: false,
         user: payload
       };
+
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
     case MODIFY_SUCCESS:

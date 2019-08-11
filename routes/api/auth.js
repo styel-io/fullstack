@@ -173,9 +173,6 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    // if (req.body.email === "") {
-    //   res.json("email required");
-    // }
     const { email } = req.body;
 
     console.log(email);
@@ -184,7 +181,8 @@ router.post(
       let user = await User.findOne({ email });
 
       if (!user) {
-        return res.status(400).json("email not in db");
+        res.status(400).json({ errors: [{ msg: "email is not in database" }] });
+        return;
       } else {
         // STEP 1. Generate a Token
         // 20자까지 해쉬 토큰 생성
@@ -224,7 +222,7 @@ router.post(
             console.error("there was an error: ", err);
           } else {
             console.log("here is the res: ", response);
-            res.status(200).json("recovery email sent");
+            res.status(200).json("success");
           }
         });
       }
