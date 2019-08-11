@@ -207,13 +207,12 @@ export const updatePassword = ({ password, email }) => async dispatch => {
 // getResetPasswordToken
 export const getResetPasswordToken = token => async dispatch => {
   try {
-    // console.log(token);
     const res = await axios.get("/api/auth/reset/", {
       params: {
         resetPasswordToken: token
       }
     });
-    console.log(res.data);
+
     dispatch({
       type: GET_USEREMAIL,
       payload: res.data
