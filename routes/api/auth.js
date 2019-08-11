@@ -281,27 +281,24 @@ router.put("/updatePasswordViaEmail", async (req, res) => {
   try {
     let user = await User.findOne({ email });
 
-    if (user !== null) {
-      console.log("user exists in db");
-
-      const salt = await bcrypt.genSalt(10);
-      // 요청받은 패스워드값과 salt를 이용하여 해쉬화 하고 user.password에 담는다.
-      user.password = await bcrypt.hash(password, salt);
-
-      await user.updateOne({
-        password: user.password,
-        resetPasswordToken: null,
-        resetPasswordExpires: null
-      });
-
-      console.log("password updated");
-      res.status(200).send({ msg: "password updated" });
-    } else {
-      console.log("no user exists in db to update");
-      res
+    if (!user) {
+      return res
         .status(400)
         .json({ errors: [{ msg: "no user exists in db to update" }] });
     }
+
+    const salt = await bcrypt.genSalt(10);
+    // 요청받은 패스워드값과 salt를 이용하여 해쉬화 하고 user.password에 담는다.
+    user.password = await bcrypt.hash(password, salt);
+
+    await user.updateOne({
+      password: user.password,
+      resetPasswordToken: null,
+      resetPasswordExpires: null
+    });
+
+    console.log("password updated");
+    res.status(200).json("password updated");
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
