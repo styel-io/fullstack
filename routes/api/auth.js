@@ -105,6 +105,7 @@ router.post(
   async (req, res) => {
     // check에서 검증했을 때 에러가 발생하면 errors 변수에 담는다. 예를들어 이메일과 패스워드가 형식에 맞게 전달되면 에러는 발생하지 않고, 패스워드가 없이 전달되면 'Password is required'를 errors에 담는다.
     const errors = validationResult(req);
+    console.log(errors);
     // Finds the validation errors in this request and wraps them in an object with handy functions
     // 만약 errors변수가 비어있지 않다면, status 400 그리고 에러 메시지를 배열로 담아 클라이언트에게 전달한다
     if (!errors.isEmpty()) {
@@ -167,13 +168,14 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
 
+    console.log(errors);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    if (req.body.email === "") {
-      res.json("email required");
-    }
+    // if (req.body.email === "") {
+    //   res.json("email required");
+    // }
     const { email } = req.body;
 
     console.log(email);
@@ -210,7 +212,7 @@ router.post(
           text:
             `You ar receiving this because you (or someone else) have requested the reset of the password for your account. \n\n` +
             `Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it: \n\n` +
-            `http://localhost:3000/reset/${token}\n\n` +
+            `https://styel.io/reset/${token}\n\n` +
             `If you did not request this, please ignore this email and your password will remain unchanged. \n`
         };
 
