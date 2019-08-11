@@ -4,13 +4,23 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../actions/auth";
 import Alert from "../Alert";
-import { Grid } from "semantic-ui-react";
+
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles(theme => ({
+  "@global": {
+    body: {
+      backgroundColor: theme.palette.common.white
+    }
+  },
   root: {
     width: "100%"
   },
@@ -19,9 +29,13 @@ const useStyles = makeStyles(theme => ({
     flexWrap: "wrap"
   },
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(0),
+    marginRight: theme.spacing(0),
+    marginTop: theme.spacing(2),
     width: "100%"
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2)
   },
   button: {
     margin: theme.spacing(1)
@@ -38,6 +52,12 @@ const useStyles = makeStyles(theme => ({
   },
   label: {
     color: "#22b573"
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   }
 }));
 
@@ -65,61 +85,63 @@ const Login = ({ login, isAuthenticated }) => {
   }
 
   return (
-    <Fragment>
-      <Grid textAlign="center" verticalAlign="middle">
-        <Grid.Column style={{ maxWidth: 350 }} className="signform">
-          {/* <Typography variant="h3" gutterBottom>
-            STYEL
-          </Typography> */}
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <form className={classes.container} onSubmit={e => onSubmit(e)}>
+          <TextField
+            fullWidth
+            id="email"
+            label="Email Address"
+            type="email"
+            placeholder="Email Address"
+            className={classes.textField}
+            value={values.email}
+            onChange={handleChange("email")}
+            autoFocus
+          />
+          <TextField
+            fullWidth
+            id="password"
+            label="Password"
+            type="password"
+            placeholder="Password"
+            className={classes.textField}
+            value={values.password}
+            onChange={handleChange("password")}
+            autoComplete="current-password"
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="outlined"
+            color="inherit"
+            size="large"
+            className={classes.submit}
+          >
+            Sign In
+          </Button>
 
-          <form className={classes.container} onSubmit={e => onSubmit(e)}>
-            <TextField
-              fullWidth="true"
-              id="standard-email"
-              label="Email"
-              type="email"
-              placeholder="Email Address"
-              className={classes.textField}
-              value={values.email}
-              onChange={handleChange("email")}
-              margin="normal"
-            />
-            <TextField
-              fullWidth="true"
-              id="standard-password"
-              label="Password"
-              type="password"
-              placeholder="Password"
-              className={classes.textField}
-              value={values.password}
-              onChange={handleChange("password")}
-              margin="normal"
-            />
-            <Button
-              fullWidth="true"
-              variant="outlined"
-              type="submit"
-              color="primary"
-              className={classes.buttonPrimary}
-            >
-              Login
-            </Button>
-            <Button
-              size="large"
-              fullWidth="true"
-              variant="outlined"
-              type="submit"
-              className={classes.button}
-            >
-              New to us? <Link to="/register">&nbsp; Sign Up</Link>
-            </Button>
-            <Link to="/forgotpassword">ForgotPassword</Link>
-          </form>
-
-          <Alert />
-        </Grid.Column>
-      </Grid>
-    </Fragment>
+          <Grid container>
+            <Grid item xs>
+              <Link to="/forgotpassword" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to="/register" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+        <Alert />
+      </div>
+    </Container>
   );
 };
 

@@ -57,6 +57,43 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     margin: 10
+  },
+  search: {
+    position: "relative",
+    // borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.black, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.black, 0.25)
+    },
+    marginLeft: theme.spacing(2),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(2),
+      width: "auto"
+    }
+  },
+  searchIcon: {
+    width: theme.spacing(7),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  inputRoot: {
+    color: "inherit"
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 7),
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: 120,
+      "&:focus": {
+        width: 200
+      }
+    }
   }
 }));
 
@@ -100,6 +137,19 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
                 src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_42x42.png"
               />
             </Link>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
+            </div>
             {!loading && (
               <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
             )}
