@@ -70,7 +70,7 @@ const Feed = ({ getPosts, post: { posts, loading } }) => {
     <ColorLinearProgress />
   ) : (
     <Fragment>
-      <div>
+      <div className="posts">
         {posts.map(post => (
           <FeedBox key={post._id} post={post} />
         ))}
