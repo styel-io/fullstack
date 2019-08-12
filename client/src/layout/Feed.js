@@ -5,6 +5,7 @@ import { getPosts } from "../actions/post";
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import GridList from "@material-ui/core/GridList";
 
 // containers
 import FeedBox from "../containers/FeedBox";
