@@ -21,6 +21,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { withStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { width } from "@material-ui/system";
 
 // import "../styles/containers/FeedBox.css";
 
@@ -35,11 +36,12 @@ const ColorLinearProgress = withStyles({
 
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 540
+    maxWidth: 540,
+    marginBottom: theme.spacing(4)
   },
   media: {
     height: 0,
-    paddingTop: "56.25%" // 16:9
+    padding: "100%" // 16:9
   },
   expand: {
     transform: "rotate(0deg)",
@@ -51,7 +53,11 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: "rotate(180deg)"
   },
-  avatar: {}
+  avatar: {},
+  image: {
+    maxWidth: "560px",
+    width: "100%"
+  }
 }));
 
 const FeedBox = ({ post }) => {
@@ -81,7 +87,9 @@ const FeedBox = ({ post }) => {
         title={post.name}
         subheader={moment(post.date).fromNow()}
       />
-      <CardMedia className={classes.media} image={post.imageurl} title="" />
+
+      {/* <CardMedia className={classes.media} image={post.imageurl} title="" /> */}
+      <img src={post.imageurl} className={classes.image} />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           <div dangerouslySetInnerHTML={{ __html: post.text }} />
