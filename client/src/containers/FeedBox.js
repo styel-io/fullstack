@@ -19,12 +19,23 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { withStyles } from "@material-ui/core/styles";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 // import "../styles/containers/FeedBox.css";
 
+const ColorLinearProgress = withStyles({
+  colorPrimary: {
+    backgroundColor: "#cedfd6;"
+  },
+  barColorPrimary: {
+    backgroundColor: "#22b573;"
+  }
+})(LinearProgress);
+
 const useStyles = makeStyles(theme => ({
   card: {
-    maxWidth: 345
+    maxWidth: 540
   },
   media: {
     height: 0,
@@ -40,14 +51,10 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: "rotate(180deg)"
   },
-  avatar: {
-    margin: 10
-  }
+  avatar: {}
 }));
 
-const FeedBox = ({
-  post: { _id, text, name, avatar, user, likes, comments, date, imageurl }
-}) => {
+const FeedBox = ({ post }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
@@ -60,20 +67,24 @@ const FeedBox = ({
     <Card className={classes.card}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" src={avatar} className={classes.avatar} />
+          <Avatar
+            aria-label="recipe"
+            src={post.avatar}
+            className={classes.avatar}
+          />
         }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={name}
-        subheader={moment(date).fromNow()}
+        title={post.name}
+        subheader={moment(post.date).fromNow()}
       />
-      <CardMedia className={classes.media} image={imageurl} title="" />
+      <CardMedia className={classes.media} image={post.imageurl} title="" />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          <div dangerouslySetInnerHTML={{ __html: text }} />
+          <div dangerouslySetInnerHTML={{ __html: post.text }} />
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -107,8 +118,6 @@ FeedBox.propTypes = {
   post: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({
-  post: state.post
-});
+const mapStateToProps = state => ({});
 
 export default connect(mapStateToProps)(FeedBox);
