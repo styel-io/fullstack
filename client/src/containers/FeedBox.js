@@ -22,6 +22,8 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { withStyles } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { width } from "@material-ui/system";
+import Input from "@material-ui/core/Input";
+import TextField from "@material-ui/core/TextField";
 
 // import "../styles/containers/FeedBox.css";
 
@@ -64,10 +66,18 @@ const FeedBox = ({ post }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
-
-  function handleExpandClick() {
+  const [values, setValues] = React.useState({
+    comment: ""
+  });
+  const handleExpandClick = () => {
     setExpanded(!expanded);
-  }
+  };
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  const { comment } = values;
 
   return (
     <Card className={classes.card}>
@@ -87,8 +97,6 @@ const FeedBox = ({ post }) => {
         title={post.name}
         subheader={moment(post.date).fromNow()}
       />
-
-      {/* <CardMedia className={classes.media} image={post.imageurl} title="" /> */}
       <img src={post.imageurl} className={classes.image} />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
@@ -115,7 +123,23 @@ const FeedBox = ({ post }) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography>댓글박스</Typography>
+          <TextField
+            id="standard-name"
+            autoFocus
+            fullWidth
+            placeholder="Comment"
+            className={classes.textField}
+            value={values.name}
+            onChange={handleChange("name")}
+          />
+          {/* <TextField
+        id="standard-name"
+        label="Name"
+        className={classes.textField}
+        value={values.name}
+        onChange={handleChange('name')}
+        margin="normal"
+      /> */}
         </CardContent>
       </Collapse>
     </Card>
