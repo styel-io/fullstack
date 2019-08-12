@@ -25,6 +25,7 @@ import { width } from "@material-ui/system";
 import Input from "@material-ui/core/Input";
 import TextField from "@material-ui/core/TextField";
 
+import { addComment } from "../actions/post";
 // import "../styles/containers/FeedBox.css";
 
 const ColorLinearProgress = withStyles({
@@ -62,22 +63,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FeedBox = ({ post }) => {
+const FeedBox = ({ post, addComment }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
-  const [values, setValues] = React.useState({
-    comment: ""
-  });
+
+  const [text, setText] = React.useState("");
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value });
-  };
-
-  const { comment } = values;
 
   return (
     <Card className={classes.card}>
@@ -123,23 +118,32 @@ const FeedBox = ({ post }) => {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <TextField
-            id="standard-name"
-            autoFocus
-            fullWidth
-            placeholder="Comment"
-            className={classes.textField}
-            value={values.name}
-            onChange={handleChange("name")}
-          />
-          {/* <TextField
-        id="standard-name"
-        label="Name"
-        className={classes.textField}
-        value={values.name}
-        onChange={handleChange('name')}
-        margin="normal"
-      /> */}
+          <div>
+            {post.comments.map(comment => (
+              <CommentItem
+                key={comment._id}
+                comment={comment}
+                postId={post._id}
+              />
+            ))}
+          </div>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              addComment(post._id, { text });
+              setText("");
+            }}
+          >
+            <TextField
+              id="standard-name"
+              autoFocus
+              fullWidth
+              placeholder="Comment"
+              className={classes.textField}
+              value={text}
+              onChange={e => setText(e.target.value)}
+            />
+          </form>
         </CardContent>
       </Collapse>
     </Card>
@@ -152,4 +156,7 @@ FeedBox.propTypes = {
 
 const mapStateToProps = state => ({});
 
-export default connect(mapStateToProps)(FeedBox);
+export default connect(
+  mapStateToProps,
+  { addComment }
+)(FeedBox);
