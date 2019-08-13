@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Moment from "react-moment";
+import moment from "moment";
 import { deleteComment } from "../../actions/post";
+
+import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
 
 const CommentItem = ({
   postId,
@@ -11,26 +15,23 @@ const CommentItem = ({
   auth,
   deleteComment
 }) => (
-  <div className="post bg-white p-1 my-1">
+  <div>
     <div>
       <Link to={`/profile/${user}`}>
-        <img className="round-img" src={avatar} alt="" />
-        <h4>{name}</h4>
+        {/* <Avatar src={avatar} /> */}
+        {name}
       </Link>
-    </div>
-    <div>
-      <p className="my-1">{text}</p>
-      <p className="post-date">
-        Posted on <Moment format="YYYY/MM/DD">{date}</Moment>
-      </p>
+
+      {moment(date).fromNow()}
+      {text}
       {!auth.loading && user === auth.user._id && (
-        <button
+        <IconButton
+          aria-label="delete"
+          size="small"
           onClick={() => deleteComment(postId, _id)}
-          type="button"
-          className="btn btn-danger"
         >
-          <i className="fas fa-times" />
-        </button>
+          <i class="material-icons">clear</i>
+        </IconButton>
       )}
     </div>
   </div>

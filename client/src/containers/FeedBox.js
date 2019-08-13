@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import moment from "moment";
+import CommentItem from "../components/post/CommentItem";
 
 // import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
