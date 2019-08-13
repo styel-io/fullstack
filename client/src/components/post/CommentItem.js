@@ -30,7 +30,7 @@ const CommentItem = ({
           size="small"
           onClick={() => deleteComment(postId, _id)}
         >
-          <i class="material-icons">clear</i>
+          <i className="material-icons">clear</i>
         </IconButton>
       )}
     </div>

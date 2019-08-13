@@ -164,6 +164,8 @@ export const addComment = (postId, formData) => async dispatch => {
       payload: res.data
     });
 
+    console.log(res.data);
+
     dispatch(setAlert("Comment Added", "success"));
   } catch (err) {
     dispatch({

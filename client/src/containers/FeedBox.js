@@ -95,9 +95,9 @@ const FeedBox = ({ post, addComment }) => {
       />
       <img src={post.imageurl} className={classes.image} />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          <div dangerouslySetInnerHTML={{ __html: post.text }} />
-        </Typography>
+        {/* <Typography variant="body2" color="textSecondary" component="p"> */}
+        <div dangerouslySetInnerHTML={{ __html: post.text }} />
+        {/* </Typography> */}
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
