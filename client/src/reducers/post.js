@@ -63,18 +63,13 @@ export default (state = initialState, action) => {
         ),
         loading: false
       };
+
     case ADD_COMMENT:
       return {
         ...state,
-        post: state.posts.,
+        post: { ...state.post, comments: payload },
         loading: false
       };
-    // case ADD_COMMENT:
-    //   return {
-    //     ...state,
-    //     post: { ...state.post, comments: payload },
-    //     loading: false
-    //   };
     case REMOVE_COMMENT:
       return {
         ...state,
