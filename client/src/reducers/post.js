@@ -70,6 +70,9 @@ export default (state = initialState, action) => {
         post: { ...state.post, comments: payload },
         loading: false
       };
+
+    // 배열로 들어간 각각의 포스트의 ID를 참조 하여 코멘트가 리덕스 상태에 추가되도록해준다.
+
     case REMOVE_COMMENT:
       return {
         ...state,
