@@ -2,11 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import Moment from "react-moment";
 import moment from "moment";
 import { deleteComment } from "../../actions/post";
 
-import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 
 const CommentItem = ({
