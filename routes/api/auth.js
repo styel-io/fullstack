@@ -8,6 +8,7 @@ const { check, validationResult } = require("express-validator");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
+
 require("dotenv").config();
 
 const User = require("../../models/User");
