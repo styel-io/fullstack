@@ -75,17 +75,31 @@ export default (state = initialState, action) => {
         loading: false
       };
 
-    // 배열로 들어간 각각의 포스트의 ID를 참조 하여 코멘트가 리덕스 상태에 추가되도록해준다.
+    // case REMOVE_COMMENT:
+    //   return {
+    //     ...state,
+    //     post: {
+    //       ...state.post,
+    //       comments: state.post.comments.filter(
+    //         comment => comment._id !== payload
+    //       )
+    //     },
+    //     loading: false
+    //   };
 
     case REMOVE_COMMENT:
       return {
         ...state,
-        post: {
-          ...state.post,
-          comments: state.post.comments.filter(
-            comment => comment._id !== payload
-          )
-        },
+        posts: state.posts.map(post =>
+          post._id === payload.postId
+            ? {
+                ...post,
+                comments: post.comments.filter(
+                  comment => comment._id !== payload.commentId
+                )
+              }
+            : post
+        ),
         loading: false
       };
     default:
