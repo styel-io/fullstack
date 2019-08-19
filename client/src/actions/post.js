@@ -158,13 +158,11 @@ export const addComment = (postId, formData) => async dispatch => {
       formData,
       config
     );
-
+    // data에 새로 저장된 코멘트를 포함한 전체 코멘트를 가져와서 저장한다. post._id값은 id로 지정하여 넘겨준다.
     dispatch({
       type: ADD_COMMENT,
-      payload: res.data
+      payload: { data: res.data, id: postId }
     });
-
-    console.log(res.data);
 
     dispatch(setAlert("Comment Added", "success"));
   } catch (err) {
