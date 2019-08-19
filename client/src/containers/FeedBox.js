@@ -113,7 +113,6 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
               />
             ))}
           </div>
-          {(user === null) ? <div></div> : }
           <form
             onSubmit={e => {
               e.preventDefault();
