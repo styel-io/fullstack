@@ -19,8 +19,9 @@ const CommentItem = ({
         {/* <Avatar src={avatar} /> */}
         {name}
       </Link>
-
-      {moment(date).fromNow()}
+      <span>&nbsp;</span>
+      <span style={{ color: "gray" }}>{moment(date).fromNow()}</span>
+      <span>&nbsp;</span>
       {text}
       {!auth.loading && user === auth.user._id && (
         <IconButton

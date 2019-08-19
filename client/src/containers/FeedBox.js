@@ -49,7 +49,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FeedBox = ({ post, addComment }) => {
+const FeedBox = ({ post, auth: { user }, addComment }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
@@ -113,6 +113,7 @@ const FeedBox = ({ post, addComment }) => {
               />
             ))}
           </div>
+          {(user === null) ? <div></div> : }
           <form
             onSubmit={e => {
               e.preventDefault();
@@ -140,7 +141,9 @@ FeedBox.propTypes = {
   post: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
 export default connect(
   mapStateToProps,
