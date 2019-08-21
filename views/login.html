@@ -1,6 +1,13 @@
 <html lang="en">
 <head>
     <% include ./inc/header.ejs %>
+
+    <script>
+    function check(){
+        
+    }
+
+    </script>
 </head>
 <body>
     <div class="row full">
@@ -12,8 +19,10 @@
                 <form action="/admin/login" method="POST">
                     <label for="email">Email</label><br>
                     <input type="text" id="email" name="email"><br>
+                    
                     <label for="password">Password</label><br>
                     <input type="password" id="password" name="password"><br>
+                    
                     <input type="submit" value="Login">
                 </form>
             </div>

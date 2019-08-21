@@ -1,0 +1,21 @@
+<html lang="en">
+<head>
+    <% include ./inc/header.ejs %>
+</head>
+<body>
+    <% if(session){ %>
+    <a href="/admin/logout"></a>
+    <% }else { %>
+    <p>왜 안되는거지...</p>
+    <% }%>
+    <div class="row">
+        <div class="col-sm-3">
+            <div><a href="#">Dashboard</a></div>
+            <div><a href="#">Member</a></div>
+        </div>
+        <div class="col-sm-9">
+            <div></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -48,6 +48,9 @@ router.post(
         res.status(400).json({ errors: [{ msg: "Invalid Email" }] });
         return;
       }
+      console.log("---------------------------");
+      console.log(user);
+
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {

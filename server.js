@@ -1,8 +1,11 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const logger = require("morgan");
+const session = require("express-session");
+const cookieparser = require("cookie-parser");
 const app = express();
 const path = require("path");
+
 
 // Connect Database
 connectDB();
@@ -15,9 +18,30 @@ app.engine("html", require("ejs").renderFile);
 app.use(express.static(path.join(__dirname, "public")));
 
 
+
 // Init Middleware
-app.use(express.json({ extended: false }));
+app.use(express.json({extended:false}));
 app.use(logger("dev"));
+
+app.use(express.urlencoded({
+    extended: false
+}))
+
+app.use(cookieparser());
+app.use(session({
+    key: "sid",
+    secret: '1A@W#E$R',
+    resave: false,
+    saveUninitialized: true,
+    cookie : {
+        maxAge: 500 * 60 * 60
+    }
+    // key: 세션의 키 값
+    // secret: 세션의 비밀 키, 쿠키값의 변조를 막기 위해서 이 값을 통해 세션을 암호화 하여 저장
+    // resave: 세션을 항상 저장할 지 여주(false를 권장)
+    // saveUninitialized: 세션이 저장되기전에 uninitialize 상태로 만들어 저장
+    // cookie: 쿠키 설정
+}))
 
 app.get("/", (req, res) => res.send("API Running"));
 
