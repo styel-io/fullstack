@@ -55,9 +55,7 @@ router.post(
 
         first = re.lastIndex;
         // RegExp 객체의 lastIndex 속성을 이용해 검색 결과의 마지막 인덱스 접근 가능
-        console.log(matchArray[0].replace("#", ""));
         hashtagArray += matchArray[0].replace("#", "") + ",";
-        console.log(hashtagArray);
       }
 
       // 문자열 종료
