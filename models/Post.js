@@ -13,7 +13,7 @@ const PostSchema = new Schema({
   name: {
     type: String
   },
-  images: {
+  imageurl: {
     type: String
   },
   location: {

@@ -47,7 +47,10 @@ router.post(
         matchArray[0] = matchArray[0].replace(" ", "");
         // "<a href='/api/routes/search/matchArray[0]'>" + matchArray[0] + "</a>"
         // 일치하는 부분에 강조 스타일이 지정된 class 추가
-        resultString += "<a href='/'>" + matchArray[0] + "</a>";
+        resultString +=
+          `<a href='/t/${matchArray[0].replace("#", "")}'>` +
+          matchArray[0] +
+          "</a>";
 
         first = re.lastIndex;
         // RegExp 객체의 lastIndex 속성을 이용해 검색 결과의 마지막 인덱스 접근 가능
