@@ -8,3 +8,7 @@ html, body, .full {
     height: 100%;
     text-align: center;
 }
+
+.admin_logo {
+    color: #fff;
+}

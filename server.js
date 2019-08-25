@@ -32,7 +32,7 @@ app.use(session({
     key: "sid",
     secret: '1A@W#E$R',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie : {
         maxAge: 500 * 60 * 60
     }
