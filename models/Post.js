@@ -22,9 +22,11 @@ const PostSchema = new Schema({
   avatar: {
     type: String
   },
-  hashtags: {
-    type: String
-  },
+  hashtags: [
+    {
+      type: String
+    }
+  ],
   likes: [
     {
       user: {

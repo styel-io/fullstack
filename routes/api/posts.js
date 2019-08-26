@@ -38,6 +38,7 @@ router.post(
       var first = 0;
       var last = 0;
       var hashtagArray = [];
+      var standByTag = "";
 
       // 각각의 일치하는 부분 검색
       while ((matchArray = re.exec(searchString)) != null) {
@@ -55,7 +56,13 @@ router.post(
 
         first = re.lastIndex;
         // RegExp 객체의 lastIndex 속성을 이용해 검색 결과의 마지막 인덱스 접근 가능
-        hashtagArray += matchArray[0].replace("#", "") + ",";
+        console.log(matchArray[0]);
+
+        standByTag = matchArray[0].replace("#", "");
+
+        hashtagArray.push(standByTag);
+
+        console.log(hashtagArray);
       }
 
       // 문자열 종료
