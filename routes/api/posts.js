@@ -37,6 +37,7 @@ router.post(
       var resultString = "<div>";
       var first = 0;
       var last = 0;
+      var hashtagArray = [];
 
       // 각각의 일치하는 부분 검색
       while ((matchArray = re.exec(searchString)) != null) {
@@ -47,10 +48,14 @@ router.post(
         matchArray[0] = matchArray[0].replace(" ", "");
         // "<a href='/api/routes/search/matchArray[0]'>" + matchArray[0] + "</a>"
         // 일치하는 부분에 강조 스타일이 지정된 class 추가
-        resultString += "<a href='/'>" + matchArray[0] + "</a>";
+        resultString +=
+          `<a href='/t/${matchArray[0].replace("#", "")}'>` +
+          matchArray[0] +
+          "</a>";
 
         first = re.lastIndex;
         // RegExp 객체의 lastIndex 속성을 이용해 검색 결과의 마지막 인덱스 접근 가능
+        hashtagArray += matchArray[0].replace("#", "") + ",";
       }
 
       // 문자열 종료
@@ -58,6 +63,7 @@ router.post(
       resultString += "</div>";
 
       const newPost = new Post({
+        hashtags: hashtagArray,
         text: resultString,
         imageurl: req.body.imageurl,
         name: user.name,

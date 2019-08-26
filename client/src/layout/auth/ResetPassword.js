@@ -1,5 +1,4 @@
 import React, { useEffect, Fragment } from "react";
-import axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Alert from "../Alert";
@@ -91,7 +90,7 @@ const ResetPassword = ({
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const { password, email } = values;
+  const { password } = values;
 
   //   The Update Password Function
   const onSubmit = async e => {

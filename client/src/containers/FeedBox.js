@@ -9,34 +9,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { withStyles } from "@material-ui/core/styles";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import { width } from "@material-ui/system";
-import Input from "@material-ui/core/Input";
 import TextField from "@material-ui/core/TextField";
 
 import { addComment } from "../actions/post";
 // import "../styles/containers/FeedBox.css";
-
-const ColorLinearProgress = withStyles({
-  colorPrimary: {
-    backgroundColor: "#cedfd6;"
-  },
-  barColorPrimary: {
-    backgroundColor: "#22b573;"
-  }
-})(LinearProgress);
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -64,7 +49,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FeedBox = ({ post, addComment }) => {
+const FeedBox = ({ post, auth: { user }, addComment }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
@@ -93,7 +78,7 @@ const FeedBox = ({ post, addComment }) => {
         title={post.name}
         subheader={moment(post.date).fromNow()}
       />
-      <img src={post.imageurl} className={classes.image} />
+      <img src={post.imageurl} className={classes.image} alt="styel" />
       <CardContent>
         {/* <Typography variant="body2" color="textSecondary" component="p"> */}
         <div dangerouslySetInnerHTML={{ __html: post.text }} />
@@ -155,7 +140,9 @@ FeedBox.propTypes = {
   post: PropTypes.object.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
 export default connect(
   mapStateToProps,
