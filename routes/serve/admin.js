@@ -67,7 +67,7 @@ router.get("/dashboard", async (req, res) => {
         let all_post = await Post.count();
         
         res.render("dashboard.ejs", {
-            user: req.session.user,
+            user: user.name,
             all_member: all_member,
             all_post: all_post
         });
