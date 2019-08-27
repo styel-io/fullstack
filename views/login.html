@@ -53,7 +53,8 @@
         font-size: 17px;
         letter-spacing: none;
         font-weight: bold;
-
+        border: .5px solid grey;
+        border-radius: 2.5px 2.5px 2.5px 2.5px;
 
     }
 
@@ -62,7 +63,8 @@
         padding: 0.6em;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
         font-size: 12px;
-
+        border: .5px solid grey;
+        border-radius: 2.5px 2.5px 2.5px 2.5px;
     }
 
 
@@ -94,7 +96,7 @@
         <div class="loginbox">
             <div>
                 <form action="/admin/login" method="POST">
-                    <label for="email">Email</label><br>
+                    <label for="email" style="">Email</label><br>
                     <input type="text" id="email" name="email" style class="input"><br><br>
                     <label for="password">Password</label><br>
                     <input type="password" id="password" name="password" style class="input"><br><br>              
