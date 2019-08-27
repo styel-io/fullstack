@@ -4,6 +4,9 @@ const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
 const Post = require("../../models/Post");
 
+
+
+
 router.get('/', (req, res, next) => {
     console.log("login page test");
     res.render("login.html");
@@ -51,7 +54,7 @@ router.get("/dashboard", async (req, res) => {
     try {
         if (!req.session.user) {
             console.log("로그인이 안되어 있음");
-            redirect("/admin");
+            res.redirect("/admin/error");
         }
         let email = req.session.user;
         let user = await User.findOne({ email });
@@ -59,7 +62,7 @@ router.get("/dashboard", async (req, res) => {
         console.log(user);
         if (user.role != "admin") {
             // 로그인은 되어 있는데 어드민이 아닌 경우
-            res.redirect("/admin");
+            res.redirect("/admin/error");
         }
 
 
@@ -92,12 +95,13 @@ router.get("/member_manage", async (req, res) => {
 
         if (!req.session.user) {
             // 로그인이 안되어 있는 경우 돌리기
+            res.redirect("/admin/error");
 
         } else {
             let email = req.session.user;
             let user = await User.findOne({ email });
             if (user.role != "admin") {
-                res.redirect("/admin");
+                res.redirect("/admin/error");
             }
             res.render("manage.ejs", {
                 all_member: all_member
@@ -108,6 +112,10 @@ router.get("/member_manage", async (req, res) => {
         console.log("error 발생 ㅠㅠ");
         console.log(err);
     }
+})
+
+router.get("/error", (req, res) =>{
+    res.render("admin_error.html");
 })
 
 module.exports = router;
