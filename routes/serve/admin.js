@@ -113,6 +113,15 @@ router.get("/member_manage", async (req, res) => {
     }
 })
 
+router.get("/change", async (req, res) =>{
+    try{
+
+    }catch(err){
+        
+    }
+})
+
+
 router.get("/error", (req, res) =>{
     res.render("admin_error.ejs");
 })

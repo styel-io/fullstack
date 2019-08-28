@@ -68,7 +68,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     call_num: "",
     password: "",
     password2: "",
-    role: ""
+    role: "member"
   });
 
   const handleChange = name => event => {
