@@ -17,7 +17,7 @@ router.get("/:tag", async (req, res) => {
 
     for (let i = 0; i < tagPostList.postId.length; i++) {
       console.log(tagPostList.postId[i]);
-      posts.unshift(await Post.findById(tagPostList.postId[i]));
+      posts.push(await Post.findById(tagPostList.postId[i]));
     }
     console.log(posts);
     res.json(posts);
