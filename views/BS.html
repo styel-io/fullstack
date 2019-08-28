@@ -20,8 +20,15 @@
     <link href="../../dist/css/dashboard.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/public/css/dashboard.css" rel="stylesheet">
+    <!-- <link href="/css/dashboard.css" rel="stylesheet"> -->
     <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+    
+    <style>
+    html, body {
+        background: #000000;
+    }
+    
+    </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -47,9 +54,9 @@
                 <img alt="STYEL" src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_42x42.png" style="position:fixed; top:3px; left: 30px;">
             </a>
         </div>
-          <textarea style="position:fixed; left: 80px;">DASHBOARD</textarea>
+         
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
+        <!-- <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Dashboard</a></li>
             <li><a href="#">Settings</a></li>
@@ -60,8 +67,17 @@
             <input type="text" class="form-control" placeholder="Search...">
           </form>
         </div>
+    -->
       </div>
+      
     </nav>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
 
     <div class="container-fluid">
       <div class="row">
