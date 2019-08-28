@@ -21,6 +21,7 @@ router.post(
       .not()
       .isEmpty(),
     check("email", "Please include a valid email").isEmail(),
+    // check("call_num", "Please enter your phone number").isEmpty(),
     check(
       "password",
       "Please enter a password with 6 or more characters"
@@ -32,7 +33,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password, role } = req.body;
+    const { name, email, call_num, password, role } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -52,6 +53,7 @@ router.post(
       user = new User({
         name,
         email,
+        call_num,
         avatar,
         password,
         role
