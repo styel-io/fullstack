@@ -5,8 +5,6 @@ const User = require("../../models/User");
 const Post = require("../../models/Post");
 
 
-
-
 router.get('/', (req, res, next) => {
     console.log("login page test");
     res.render("login.html");
@@ -104,6 +102,7 @@ router.get("/member_manage", async (req, res) => {
                 res.redirect("/admin/error");
             }
             res.render("manage.ejs", {
+                user : user.name,
                 all_member: all_member
             })
         }
@@ -115,7 +114,7 @@ router.get("/member_manage", async (req, res) => {
 })
 
 router.get("/error", (req, res) =>{
-    res.render("admin_error.html");
+    res.render("admin_error.ejs");
 })
 
 module.exports = router;
