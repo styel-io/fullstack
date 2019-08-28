@@ -9,7 +9,8 @@ import {
   GET_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
-  ADD_POST_STANDBY
+  ADD_POST_STANDBY,
+  GET_POSTS_BY_TAG
 } from "./types";
 
 // Upload media
@@ -40,6 +41,24 @@ export const getPosts = () => async dispatch => {
 
     dispatch({
       type: GET_POSTS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get posts by tag
+export const getPostByTag = tag => async dispatch => {
+  try {
+    console.log(tag);
+    const res = await axios.get(`/api/tags/${tag}`);
+
+    dispatch({
+      type: GET_POSTS_BY_TAG,
       payload: res.data
     });
   } catch (err) {

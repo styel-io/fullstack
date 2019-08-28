@@ -114,7 +114,7 @@ router.post(
 
 // @route    GET api/posts
 // @desc     Get all post
-// @access   Private
+// @access   Public
 router.get("/", async (req, res) => {
   try {
     const posts = await Post.find().sort({ date: -1 });
