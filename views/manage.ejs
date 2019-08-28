@@ -19,6 +19,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>Role Change</th>
                 </tr>
                 <% for(let i=0; i < all_member.length; i++ ){ %>
         
@@ -26,6 +27,7 @@
                     <td><%=all_member[i].name %></td>
                     <td><%=all_member[i].email %></td>
                     <td><%=all_member[i].role %></td>
+                    <td><a href="#"><button>전환</button></a></td>
                 </tr>
                 <% } %>
             </table>        

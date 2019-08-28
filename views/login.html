@@ -1,83 +1,24 @@
+<!DOCTYPE html>
+  
+
 <html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <link rel="stylesheet" href="/css/admin_main.css">
     <!-- <% include ./inc/header.ejs %> -->
-
-    <script>
-    
-
-    </script>
 
     <!-- text reveal src -->
     <script src="https://cdn.jsdelivr.net/npm/baffle@0.3.6/dist/baffle.min.js"></script>
-
-    
-    <style>
-        /* reveal style class  */
-    .data {
-    font-family: Poppins;
-    color: springgreen;
-    font-size: 42px;
-    letter-spacing: 12px;
-    font-weight: 600;
-    position: fixed;
-    top: 15%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-    html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100vh;
-    background: black;
-}
-
-
-    .loginbox {
-        font-family: 'Courier New', Courier, monospace;
-        color: white;
-        font-size: 19px;
-        letter-spacing: 1px;
-        font-weight: bold;
-        position: fixed;
-        top: 45%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-            }
-
-    .loginbutton {
-        font-family: 'Courier New', Courier, monospace;
-        color: black;
-        font-size: 17px;
-        letter-spacing: none;
-        font-weight: bold;
-        border: .5px solid grey;
-        border-radius: 2.5px 2.5px 2.5px 2.5px;
-
-    }
-
-    .input {
-        width: 400px;
-        padding: 0.6em;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: 12px;
-        border: .5px solid grey;
-        border-radius: 2.5px 2.5px 2.5px 2.5px;
-    }
-
-
-    </style>
-    
 
 </head>
 
 
 <body>
-
+        <!-- main logo with reveal action -->
         <div class="container">
-                <div class="data">STYLE ADMIN</div>
+                <div class="data">STYEL ADMIN</div>
           </div>
         
 
@@ -96,7 +37,7 @@
         <div class="loginbox">
             <div>
                 <form action="/admin/login" method="POST">
-                    <label for="email" style="">Email</label><br>
+                    <label for="email">ID</label><br>
                     <input type="text" id="email" name="email" style class="input"><br><br>
                     <label for="password">Password</label><br>
                     <input type="password" id="password" name="password" style class="input"><br><br>              
@@ -104,6 +45,31 @@
                 </form>
             </div>
         </div>
+    </div>
+    
+    <!-- top logo & link -->
+    <div class="toplogo">
+        <a href="/">
+            <img alt="STYEL" src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_42x42.png">
+        </a>
+    </div>
+
+    <!-- bottom line rights info -->
+
+    <div class="bottomline">
+        Copyright ©
+			
+			2019
+			Styel Inc. All rights reserved.
+    </div>
+
+    <!-- bottom links -->
+    <div class="bottomlink">
+        <a class="bottomlink" href="" style="left: 565px">Privacy Policy</a>
+        <a class="bottomlink" href="" style="left: 650px">Terms of use</a>
+        <a class="bottomlink" href="" style="left: 730px">Regal</a>
+        <a class="bottomlink" href="" style="left: 770px">Contact</a>
+        <a class="bottomlink" href="" style="left: 820px">Site Map</a>
     </div>
 </body>
 </html> 
