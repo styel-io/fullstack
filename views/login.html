@@ -3,11 +3,6 @@
     
     <!-- <% include ./inc/header.ejs %> -->
 
-    <script>
-    
-
-    </script>
-
     <!-- text reveal src -->
     <script src="https://cdn.jsdelivr.net/npm/baffle@0.3.6/dist/baffle.min.js"></script>
 
@@ -67,6 +62,12 @@
         border-radius: 2.5px 2.5px 2.5px 2.5px;
     }
 
+    .toplogo {
+        position: fixed; 
+        top: 3%; 
+        left: 36.5%;
+
+    }
 
     </style>
     
@@ -96,7 +97,7 @@
         <div class="loginbox">
             <div>
                 <form action="/admin/login" method="POST">
-                    <label for="email" style="">Email</label><br>
+                    <label for="email" style="">ID</label><br>
                     <input type="text" id="email" name="email" style class="input"><br><br>
                     <label for="password">Password</label><br>
                     <input type="password" id="password" name="password" style class="input"><br><br>              
@@ -104,6 +105,13 @@
                 </form>
             </div>
         </div>
+    </div>
+    
+    <!-- top logo & link -->
+    <div class="toplogo">
+        <a href="/">
+            <img alt="STYEL" src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_42x42.png">
+        </a>
     </div>
 </body>
 </html> 
