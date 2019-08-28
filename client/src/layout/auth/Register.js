@@ -65,6 +65,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   const [values, setValues] = React.useState({
     name: "",
     email: "",
+    call_num: "",
     password: "",
     password2: "",
     role: ""
@@ -74,14 +75,14 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const { name, email, password, password2, role } = values;
+  const { name, email, call_num, password, password2, role } = values;
 
   const onSubmit = async e => {
     e.preventDefault();
     if (password !== password2) {
       setAlert("Password do not match", "negative");
     } else {
-      register({ name, email, password, role });
+      register({ name, email, call_num, password, role });
     }
   };
 
@@ -113,6 +114,16 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             className={classes.textField}
             value={values.email}
             onChange={handleChange("email")}
+          />
+          <TextField
+            fullWidth
+            id="call_num"
+            label="Phone number"
+            type="text"
+            placeholder="Write down your phone number without '-'."
+            className={classes.textField}
+            value={values.call_num}
+            onChange={handleChange("call_num")}
           />
           <Divider variant="middle" />
           <TextField

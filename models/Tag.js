@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const TagSchema = new mongoose.Schema({
-  tag: [
+  tag: {
+    type: String
+  },
+  postId: [
     {
-      post: {
-        type: Schema.Types.ObjectId,
-        ref: "posts"
-      }
+      type: String
     }
   ]
 });

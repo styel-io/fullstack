@@ -6,6 +6,7 @@ const auth = require("../../middleware/auth");
 const Post = require("../../models/Post");
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const Tag = require("../../models/Tag");
 
 // @route    POST api/posts
 // @desc     Create a post
@@ -81,6 +82,29 @@ router.post(
       const post = await newPost.save();
 
       res.json(post);
+
+      const post_id = post.id;
+
+      for (let i = 0; i < hashtagArray.length; i++) {
+        console.log(hashtagArray[i]);
+        console.log(post_id);
+        const tag = await Tag.findOne({ tag: hashtagArray[i] });
+
+        console.log(tag);
+
+        if (tag === null) {
+          const newTag = new Tag({
+            tag: hashtagArray[i],
+            postId: post_id
+          });
+
+          await newTag.save();
+        } else {
+          tag.postId.unshift(post_id);
+          console.log(tag);
+          await tag.save();
+        }
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
