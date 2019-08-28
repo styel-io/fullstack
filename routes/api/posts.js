@@ -6,6 +6,7 @@ const auth = require("../../middleware/auth");
 const Post = require("../../models/Post");
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+// const Tag = require("../../models/Tag");
 
 // @route    POST api/posts
 // @desc     Create a post
@@ -21,6 +22,7 @@ router.post(
     ]
   ],
   async (req, res) => {
+    console.log(req);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -79,6 +81,10 @@ router.post(
       });
 
       const post = await newPost.save();
+
+      // const newTag = new Tag({
+      //   tag:
+      // })
 
       res.json(post);
     } catch (err) {
