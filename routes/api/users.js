@@ -21,7 +21,7 @@ router.post(
       .not()
       .isEmpty(),
     check("email", "Please include a valid email").isEmail(),
-    // check("call_num", "Please enter your phone number").isEmpty(),
+    check("call_num", "Please enter your phone number").not().isEmpty(),
     check(
       "password",
       "Please enter a password with 6 or more characters"

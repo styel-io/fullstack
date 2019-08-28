@@ -159,15 +159,16 @@ export const updatebasic = ({ name, email, password }) => async dispatch => {
 };
 
 // ForgotPassword
-export const forgotPassword = email => async dispatch => {
+export const forgotPassword = ({ email, call_num }) => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
-
+  const body = JSON.stringify({ email, call_num })
+  
   try {
-    const res = await axios.post("/api/auth/forgotpassword", email, config);
+    const res = await axios.post("/api/auth/forgotpassword", body, config);
     dispatch(setAlert(res.data, "success"));
   } catch (err) {
     const errors = err.response.data.errors;
