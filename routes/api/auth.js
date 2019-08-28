@@ -8,7 +8,6 @@ const { check, validationResult } = require("express-validator");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
-
 require("dotenv").config();
 
 const User = require("../../models/User");
@@ -50,7 +49,6 @@ router.post(
       }
       console.log("---------------------------");
       console.log(user);
-
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
@@ -168,7 +166,9 @@ router.post(
   [
     // username must be an email  // 유저네임이 이메일 형식인지 확인한다
     check("email", "Please include a valid email").isEmail(),
-    check("call_num", "Please enter your phone number").not().isEmpty()
+    check("call_num", "Please enter your phone number")
+      .not()
+      .isEmpty()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -180,15 +180,16 @@ router.post(
 
     const { email, call_num } = req.body;
 
-    console.log(email);
+    console.log(email, call_num);
 
     try {
       let user = await User.findOne({ email });
-      if(call_num != user.call_num){
-        res.status(400).json({ errors: [{ msg: "Phone numver is not in database" }] });
+      if (call_num != user.call_num) {
+        res
+          .status(400)
+          .json({ errors: [{ msg: "Phone numver is not in database" }] });
         return;
       }
-
 
       if (!user) {
         res.status(400).json({ errors: [{ msg: "email is not in database" }] });
