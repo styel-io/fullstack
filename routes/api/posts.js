@@ -6,7 +6,7 @@ const auth = require("../../middleware/auth");
 const Post = require("../../models/Post");
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
-// const Tag = require("../../models/Tag");
+const Tag = require("../../models/Tag");
 
 // @route    POST api/posts
 // @desc     Create a post
@@ -22,7 +22,6 @@ router.post(
     ]
   ],
   async (req, res) => {
-    console.log(req);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -82,11 +81,21 @@ router.post(
 
       const post = await newPost.save();
 
-      // const newTag = new Tag({
-      //   tag:
-      // })
-
       res.json(post);
+
+      const postId = post.id;
+
+      for (let i = 0; i < hashtagArray.length; i++) {
+        console.log(hashtagArray[i]);
+        console.log(postId);
+        const newTag = new Tag({
+          tag: hashtagArray[i],
+          postId: postId
+        });
+
+        const tag = await newTag.save();
+        console.log(tag);
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
