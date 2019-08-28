@@ -61,19 +61,20 @@ const ForgotPassword = ({ forgotPassword, isAuthenticated }) => {
   const classes = useStyles();
 
   const [values, setValues] = React.useState({
-    email: ""
+    email: "",
+    call_num: ""
   });
 
   const handleChange = name => event => {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const { email } = values;
+  const { email, call_num } = values;
 
   // 이벤트 발생시 e(이벤트)값을 인자로 받아 이메일을 보내는 함수
   const sendEmail = async e => {
     e.preventDefault();
-    forgotPassword({ email });
+    forgotPassword({ email, call_num });
   };
 
   // Redirect if logged in
@@ -95,6 +96,16 @@ const ForgotPassword = ({ forgotPassword, isAuthenticated }) => {
           onChange={handleChange("email")}
           placeholder="Email Address"
           className={classes.textField}
+        />
+        <TextField
+          fullWidth
+          id="call_num"
+          label="Phone number"
+          type="text"
+          placeholder="Write down your phone number without '-'."
+          className={classes.textField}
+          value={values.call_num}
+          onChange={handleChange("call_num")}
         />
 
         <Button
