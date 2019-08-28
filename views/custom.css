@@ -22,6 +22,7 @@ html, body {
     font-size: 25px;
     color: #818181;
     display: block;
+    font-family: 'Courier New', Courier, monospace;
   }
   
   .sidenav a:hover {
