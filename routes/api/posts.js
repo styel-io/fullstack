@@ -83,18 +83,27 @@ router.post(
 
       res.json(post);
 
-      const postId = post.id;
+      const post_id = post.id;
 
       for (let i = 0; i < hashtagArray.length; i++) {
         console.log(hashtagArray[i]);
-        console.log(postId);
-        const newTag = new Tag({
-          tag: hashtagArray[i],
-          postId: postId
-        });
+        console.log(post_id);
+        const tag = await Tag.findOne({ tag: hashtagArray[i] });
 
-        const tag = await newTag.save();
         console.log(tag);
+
+        if (tag === null) {
+          const newTag = new Tag({
+            tag: hashtagArray[i],
+            postId: post_id
+          });
+
+          await newTag.save();
+        } else {
+          tag.postId.unshift(post_id);
+          console.log(tag);
+          await tag.save();
+        }
       }
     } catch (err) {
       console.error(err.message);
