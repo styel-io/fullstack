@@ -14,6 +14,8 @@ import Profile from "../layout/Profile";
 import ProfileMe from "../layout/ProfileMe";
 import NewPost from "../layout/NewPost";
 
+import PostByTag from "../layout/PostByTag";
+
 import UpdateBasic from "../layout/modify/UpdateBasic";
 
 import Check_pass from "../layout/Check_pass";
@@ -26,6 +28,8 @@ const Routes = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/forgotpassword" component={ForgotPassword} />
         <Route exact path="/reset/:token" component={ResetPassword} />
+
+        <Route exact path="/t/:tag_name" component={PostByTag} />
 
         {/* Profile */}
         <Route exact path="/profiles" component={Profiles} />

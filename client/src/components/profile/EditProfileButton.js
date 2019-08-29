@@ -44,7 +44,7 @@ const EditProfileButton = ({ props, logout }) => {
     <Fragment>
       <Button
         size="large"
-        variant="outlined"
+        // variant="outlined"
         type="submit"
         className={classes.button}
       >
@@ -53,7 +53,7 @@ const EditProfileButton = ({ props, logout }) => {
 
       <Button
         size="large"
-        variant="outlined"
+        // variant="outlined"
         type="submit"
         className={classes.button}
       >
