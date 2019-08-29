@@ -88,6 +88,24 @@ export const getPostById = _id => async dispatch => {
   }
 };
 
+// Like it
+export const likeIt = id => async dispatch => {
+  try {
+    console.log(id);
+    const res = await axios.put(`/api/posts/like/${id}`);
+
+    dispatch({
+      type: UPDATE_LIKES,
+      payload: { id, likes: res.data }
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 // Add like
 export const addLike = id => async dispatch => {
   try {

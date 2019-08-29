@@ -22,7 +22,7 @@ import TextField from "@material-ui/core/TextField";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { addComment, deletePost } from "../actions/post";
+import { addComment, deletePost, likeIt } from "../actions/post";
 // import "../styles/containers/FeedBox.css";
 
 const useStyles = makeStyles(theme => ({
@@ -55,7 +55,8 @@ const FeedBox = ({
   post,
   auth: { user, isAuthenticated },
   addComment,
-  deletePost
+  deletePost,
+  likeIt
 }) => {
   const classes = useStyles();
 
@@ -67,16 +68,12 @@ const FeedBox = ({
     setExpanded(!expanded);
   };
 
-  function handleClick(event) {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
-  }
+  };
 
-  function handleClose() {
+  const handleClose = () => {
     setAnchorEl(null);
-  }
-
-  const editPost = () => {
-    console.log("포스트 수정");
   };
 
   return (
@@ -98,16 +95,18 @@ const FeedBox = ({
             >
               <MoreVertIcon />
             </IconButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={editPost}>Edit</MenuItem>
-              <MenuItem onClick={() => deletePost(post._id)}>Delete</MenuItem>
-            </Menu>
+            {user._id === post.user ? (
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {/* <MenuItem onClick={editPost}>Edit</MenuItem> */}
+                <MenuItem onClick={() => deletePost(post._id)}>Delete</MenuItem>
+              </Menu>
+            ) : null}
           </div>
         }
         title={post.name}
@@ -120,8 +119,17 @@ const FeedBox = ({
         {/* </Typography> */}
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton
+          aria-label="add to favorites"
+          onClick={() => {
+            likeIt(post._id);
+          }}
+        >
+          {post.likes.filter(like => like.user === user._id).length > 0 ? (
+            <FavoriteIcon color="secondary" />
+          ) : (
+            <FavoriteIcon />
+          )}
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
@@ -176,7 +184,8 @@ const FeedBox = ({
 FeedBox.propTypes = {
   post: PropTypes.object.isRequired,
   deletePost: PropTypes.func.isRequired,
-  addComment: PropTypes.func.isRequired
+  addComment: PropTypes.func.isRequired,
+  likeIt: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -185,5 +194,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addComment, deletePost }
+  { addComment, deletePost, likeIt }
 )(FeedBox);
