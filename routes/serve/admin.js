@@ -22,18 +22,20 @@ router.post('/login', async (req, res) => {
 
         if (!user) {
             console.log('ID 없다고? -------------------------');
-            res.render("fail.html");
+            res.redirect("/admin/error");
         }
         console.log("role체크-------------------");
 
         if (user.role != "admin") {
-            res.redirect("/admin");
+            res.redirect("/admin/error");
+            return false;
         }
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             console.log("password 없다고? ----------------");
-            res.render("fail.html");
+            res.redirect("/admin/error");
+            return false;
         }
         req.session.user = email;
 
@@ -52,6 +54,7 @@ router.get("/dashboard", async (req, res) => {
         if (!req.session.user) {
             console.log("로그인이 안되어 있음");
             res.redirect("/admin/error");
+            return false;
         }
         let email = req.session.user;
         let user = await User.findOne({ email });
@@ -60,6 +63,7 @@ router.get("/dashboard", async (req, res) => {
         if (user.role != "admin") {
             // 로그인은 되어 있는데 어드민이 아닌 경우
             res.redirect("/admin/error");
+            return false;
         }
 
 
@@ -68,7 +72,7 @@ router.get("/dashboard", async (req, res) => {
         let all_post = await Post.count();
 
         console.log(black_member);
-
+ 
         res.render("dashboard.ejs", {
             user: user.name,
             all_member: all_member,
@@ -91,22 +95,53 @@ router.get("/logout", (req, res) => {
 
 router.get("/member_manage", async (req, res) => {
     try {
-        let all_member = await User.find({});
+        let page = req.query.page;
+        
+        if(!page){
+            page = 1;
+        }else{
+            page = parseInt(page);
+        }
+
+        let skip = (page - 1) * 10;
+        let limit = 10;
+
+        let all_member = await User.find().skip(skip).limit(limit);
         //console.log(all_member);
 
         if (!req.session.user) {
             // 로그인이 안되어 있는 경우 돌리기
             res.redirect("/admin/error");
+            return false;
 
         } else {
             let email = req.session.user;
+            let count_member = await User.count();
             let user = await User.findOne({ email });
+            
+            pnSize = 10;
+            pnTotal = Math.ceil(count_member / limit);
+            pnStart = ((Math.ceil(page/pnSize) -1) * pnSize) +1;
+            pnEnd = (pnStart + pnSize) -1;
+
+            if(pnEnd > pnTotal){
+                pnEnd = pnTotal;
+            }
+            
+
+            console.log(pnEnd);
+
+            
             if (user.role != "admin") {
                 res.redirect("/admin/error");
+                return false;
             }
             res.render("manage.ejs", {
                 user: user.name,
-                all_member: all_member
+                all_member: all_member,
+                pnStart : pnStart,
+                pnEnd: pnEnd,
+                page: page
             })
         }
 
@@ -121,12 +156,14 @@ router.get("/admin_change", async (req, res) => {
         if (!req.session.user) {
             // 로그인이 안되어 있는 경우 돌리기
             res.redirect("/admin/error");
+            return false;
 
         } else {
             let email = req.session.user;
             let user = await User.findOne({ email });
             if (user.role != "admin") {
                 res.redirect("/admin/error");
+                return false;
             }
             let change_user = req.query.user;
             console.log("change_user: " + change_user);
@@ -151,12 +188,14 @@ router.get("/black_change", async (req, res) => {
         if (!req.session.user) {
             // 로그인이 안되어 있는 경우 돌리기
             res.redirect("/admin/error");
+            return false;
 
         } else {
             let email = req.session.user;
             let user = await User.findOne({ email });
             if (user.role != "admin") {
                 res.redirect("/admin/error");
+                return false;
             }
             let change_user = req.query.user;
             console.log("change_user: " + change_user);

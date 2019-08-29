@@ -39,7 +39,9 @@ router.post(
 
       // 문자열 구하기
       var searchString = req.body.text;
-      searchString = searchString.replace(/</g, "&lt;");
+
+      searchString =searchString.replace(/</g,"&lt;");
+
       var matchArray;
       var resultString = "<div>";
       var first = 0;
