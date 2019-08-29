@@ -162,6 +162,22 @@ router.delete("/:id", auth, async (req, res) => {
   try {
     console.log(req.params.id);
     const post = await Post.findById(req.params.id);
+    console.log(post);
+
+    const hashtags = post.hashtags;
+    const postId = post._id;
+    console.log(hashtags);
+
+    for (let i = 0; i < hashtags.length; i++) {
+      console.log(hashtags[i]);
+      const tag = await Tag.findOne({ postId });
+      console.log(tag);
+
+      tag.postId.splice(postId, 1);
+      console.log(tag);
+
+      await tag.save();
+    }
 
     // Check user
     if (post.user.toString() !== req.user.id) {
