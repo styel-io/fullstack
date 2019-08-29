@@ -6,6 +6,7 @@ import moment from "moment";
 import { deleteComment } from "../../actions/post";
 
 import IconButton from "@material-ui/core/IconButton";
+// import Avatar from "@material-ui/core/Avatar";
 
 const CommentItem = ({
   postId,

@@ -9,7 +9,9 @@ import {
   GET_POST,
   ADD_COMMENT,
   REMOVE_COMMENT,
-  ADD_POST_STANDBY
+  ADD_POST_STANDBY,
+  GET_POSTS_BY_TAG,
+  GET_POSTS_BY_ID
 } from "./types";
 
 // Upload media
@@ -26,6 +28,7 @@ export const addPostStandby = ({
     imageurl: imageurl
   };
 
+  console.log(data);
   dispatch({
     type: ADD_POST_STANDBY,
     payload: data
@@ -40,6 +43,60 @@ export const getPosts = () => async dispatch => {
     dispatch({
       type: GET_POSTS,
       payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get posts by tag
+export const getPostByTag = tag => async dispatch => {
+  try {
+    console.log(tag);
+    const res = await axios.get(`/api/tags/${tag}`);
+
+    dispatch({
+      type: GET_POSTS_BY_TAG,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Get posts by id
+export const getPostById = _id => async dispatch => {
+  try {
+    console.log(_id);
+    const res = await axios.get(`/api/posts/${_id}`);
+
+    dispatch({
+      type: GET_POSTS_BY_ID,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+// Like it
+export const likeIt = id => async dispatch => {
+  try {
+    console.log(id);
+    const res = await axios.put(`/api/posts/like/${id}`);
+
+    dispatch({
+      type: UPDATE_LIKES,
+      payload: { id, likes: res.data }
     });
   } catch (err) {
     dispatch({

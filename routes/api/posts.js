@@ -6,10 +6,12 @@ const auth = require("../../middleware/auth");
 const Post = require("../../models/Post");
 const Profile = require("../../models/Profile");
 const User = require("../../models/User");
+const Tag = require("../../models/Tag");
 
 // @route    POST api/posts
 // @desc     Create a post
 // @access   Private
+
 router.post(
   "/",
   [
@@ -29,15 +31,21 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select("-password");
 
+      if (user.role === "blacklist") {
+        res.json("넌 글 못써");
+      }
+
       var re = new RegExp(/(#[0-9a-zA-Z가-힝]+)/, "g");
 
       // 문자열 구하기
       var searchString = req.body.text;
+      searchString = searchString.replace(/</g, "&lt;");
       var matchArray;
       var resultString = "<div>";
       var first = 0;
       var last = 0;
       var hashtagArray = [];
+      var standByTag = "";
 
       // 각각의 일치하는 부분 검색
       while ((matchArray = re.exec(searchString)) != null) {
@@ -55,7 +63,13 @@ router.post(
 
         first = re.lastIndex;
         // RegExp 객체의 lastIndex 속성을 이용해 검색 결과의 마지막 인덱스 접근 가능
-        hashtagArray += matchArray[0].replace("#", "") + ",";
+        console.log(matchArray[0]);
+
+        standByTag = matchArray[0].replace("#", "");
+
+        hashtagArray.push(standByTag);
+
+        console.log(hashtagArray);
       }
 
       // 문자열 종료
@@ -74,6 +88,29 @@ router.post(
       const post = await newPost.save();
 
       res.json(post);
+
+      const post_id = post.id;
+
+      for (let i = 0; i < hashtagArray.length; i++) {
+        console.log(hashtagArray[i]);
+        console.log(post_id);
+        const tag = await Tag.findOne({ tag: hashtagArray[i] });
+
+        console.log(tag);
+
+        if (tag === null) {
+          const newTag = new Tag({
+            tag: hashtagArray[i],
+            postId: post_id
+          });
+
+          await newTag.save();
+        } else {
+          tag.postId.unshift(post_id);
+          console.log(tag);
+          await tag.save();
+        }
+      }
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
@@ -83,7 +120,7 @@ router.post(
 
 // @route    GET api/posts
 // @desc     Get all post
-// @access   Private
+// @access   Public
 router.get("/", async (req, res) => {
   try {
     const posts = await Post.find().sort({ date: -1 });
@@ -95,11 +132,14 @@ router.get("/", async (req, res) => {
 });
 
 // @route    GET api/posts/:id
-// @desc     Get post by ID
+// @desc     Get post by user ID
 // @access   Private
 router.get("/:id", auth, async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    console.log(req.params.id);
+    const user = req.params.id;
+    const post = await Post.find({ user }).sort({ date: -1 });
+    console.log(post);
 
     if (!post) {
       return res.status(404).json({ msg: "Post not found" });
@@ -120,7 +160,24 @@ router.get("/:id", auth, async (req, res) => {
 // @access   Private
 router.delete("/:id", auth, async (req, res) => {
   try {
+    console.log(req.params.id);
     const post = await Post.findById(req.params.id);
+    console.log(post);
+
+    const hashtags = post.hashtags;
+    const postId = post._id;
+    console.log(hashtags);
+
+    for (let i = 0; i < hashtags.length; i++) {
+      console.log(hashtags[i]);
+      const tag = await Tag.findOne({ postId });
+      console.log(tag);
+
+      tag.postId.splice(postId, 1);
+      console.log(tag);
+
+      await tag.save();
+    }
 
     // Check user
     if (post.user.toString() !== req.user.id) {
@@ -144,13 +201,26 @@ router.delete("/:id", auth, async (req, res) => {
 // @access   Private
 router.put("/like/:id", auth, async (req, res) => {
   try {
+    console.log(req.params.id);
     const post = await Post.findById(req.params.id);
 
+    console.log(post);
     // Check if the post has already been liked
     if (
       post.likes.filter(like => like.user.toString() === req.user.id).length > 0
     ) {
-      return res.status(400).json({ msg: "Post already liked" });
+      // Get remove index
+      const removeIndex = post.likes
+        .map(like => like.user.toString())
+        .indexOf(req.user.id);
+
+      post.likes.splice(removeIndex, 1);
+
+      console.log(post);
+
+      await post.save();
+
+      return res.json(post.likes);
     }
 
     post.likes.unshift({ user: req.user.id });
@@ -164,36 +234,61 @@ router.put("/like/:id", auth, async (req, res) => {
   }
 });
 
+// @route    PUT api/posts/like/:id
+// @desc     Like a post
+// @access   Private
+// router.put("/like/:id", auth, async (req, res) => {
+//   try {
+//     const post = await Post.findById(req.params.id);
+
+//     // Check if the post has already been liked
+//     if (
+//       post.likes.filter(like => like.user.toString() === req.user.id).length > 0
+//     ) {
+//       return res.status(400).json({ msg: "Post already liked" });
+//     }
+
+//     post.likes.unshift({ user: req.user.id });
+
+//     await post.save();
+
+//     res.json(post.likes);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server Error");
+//   }
+// });
+
 // @route    PUT api/posts/unlike/:id
 // @desc     Unlike a post
 // @access   Private
-router.put("/unlike/:id", auth, async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
+// router.put("/unlike/:id", auth, async (req, res) => {
+//   try {
+//     const post = await Post.findById(req.params.id);
 
-    // Check if the post has already been liked
-    if (
-      post.likes.filter(like => like.user.toString() === req.user.id).length ===
-      0
-    ) {
-      return res.status(400).json({ msg: "Post has not yet been liked" });
-    }
+//     // Check if the post has already been liked
+//     if (
+//       post.likes.filter(like => like.user.toString() === req.user.id).length ===
+//       0
+//     ) {
+//       return res.status(400).json({ msg: "Post has not yet been liked" });
+//     }
 
-    // Get remove index
-    const removeIndex = post.likes
-      .map(like => like.user.toString())
-      .indexOf(req.user.id);
+//     // Get remove index
+//     const removeIndex = post.likes
+//       .map(like => like.user.toString())
+//       .indexOf(req.user.id);
 
-    post.likes.splice(removeIndex, 1);
+//     post.likes.splice(removeIndex, 1);
 
-    await post.save();
+//     await post.save();
 
-    res.json(post.likes);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
+//     res.json(post.likes);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server Error");
+//   }
+// });
 
 // @route    POST api/posts/comment/:id
 // @desc     Comment on a post

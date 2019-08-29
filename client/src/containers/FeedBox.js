@@ -19,8 +19,10 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextField from "@material-ui/core/TextField";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
-import { addComment } from "../actions/post";
+import { addComment, deletePost, likeIt } from "../actions/post";
 // import "../styles/containers/FeedBox.css";
 
 const useStyles = makeStyles(theme => ({
@@ -49,15 +51,29 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FeedBox = ({ post, auth: { user }, addComment }) => {
+const FeedBox = ({
+  post,
+  auth: { user, isAuthenticated },
+  addComment,
+  deletePost,
+  likeIt
+}) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
-
   const [text, setText] = React.useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -71,9 +87,27 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
           />
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <div>
+            <IconButton
+              aria-label="settings"
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            {user._id === post.user ? (
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {/* <MenuItem onClick={editPost}>Edit</MenuItem> */}
+                <MenuItem onClick={() => deletePost(post._id)}>Delete</MenuItem>
+              </Menu>
+            ) : null}
+          </div>
         }
         title={post.name}
         subheader={moment(post.date).fromNow()}
@@ -85,8 +119,17 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
         {/* </Typography> */}
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton
+          aria-label="add to favorites"
+          onClick={() => {
+            likeIt(post._id);
+          }}
+        >
+          {post.likes.filter(like => like.user === user._id).length > 0 ? (
+            <FavoriteIcon color="secondary" />
+          ) : (
+            <FavoriteIcon />
+          )}
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
@@ -113,23 +156,25 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
               />
             ))}
           </div>
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              addComment(post._id, { text });
-              setText("");
-            }}
-          >
-            <TextField
-              id="standard-name"
-              autoFocus
-              fullWidth
-              placeholder="Comment"
-              className={classes.textField}
-              value={text}
-              onChange={e => setText(e.target.value)}
-            />
-          </form>
+          {isAuthenticated ? (
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                addComment(post._id, { text });
+                setText("");
+              }}
+            >
+              <TextField
+                id="standard-name"
+                autoFocus
+                fullWidth
+                placeholder="Comment"
+                className={classes.textField}
+                value={text}
+                onChange={e => setText(e.target.value)}
+              />
+            </form>
+          ) : null}
         </CardContent>
       </Collapse>
     </Card>
@@ -137,7 +182,10 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
 };
 
 FeedBox.propTypes = {
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  deletePost: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired,
+  likeIt: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -146,5 +194,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addComment }
+  { addComment, deletePost, likeIt }
 )(FeedBox);
