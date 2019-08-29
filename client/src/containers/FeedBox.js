@@ -19,6 +19,8 @@ import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextField from "@material-ui/core/TextField";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 import { addComment } from "../actions/post";
 // import "../styles/containers/FeedBox.css";
@@ -53,12 +55,20 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
-
   const [text, setText] = React.useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
 
   return (
     <Card className={classes.card}>
@@ -71,9 +81,25 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
           />
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <div>
+            <IconButton
+              aria-label="settings"
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>Edit</MenuItem>
+              <MenuItem onClick={handleClose}>Delete</MenuItem>
+            </Menu>
+          </div>
         }
         title={post.name}
         subheader={moment(post.date).fromNow()}
