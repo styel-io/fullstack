@@ -8,6 +8,7 @@
     <% include ./inc/nav.ejs %>
     <div class="row">
         <div class="col-sm-3">
+            <div><%=user %>님 안녕하세요.</div>
             <div><a href="/admin/dashboard">Dashboard</a></div>
             <div><a href="/admin/member_manage">Member</a></div>
         </div>
@@ -18,6 +19,8 @@
             <div>
                 전체 회원 <%= all_member %>
                 전체 Post <%= all_post %>
+                블랙 리스트 회원 <%= black_member %>
+
             </div>
         </div>
     </div>
