@@ -1,7 +1,9 @@
-import React from "react";
+import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Grid } from "semantic-ui-react";
+import Grid from "@material-ui/core/Grid";
+
+import { getPostById } from "../actions/post";
 
 import ProfileAvatar from "../components/profile/ProfileAvatar";
 import EditProfileButton from "../components/profile/EditProfileButton";
@@ -11,29 +13,51 @@ import ProfileDetail from "../components/profile/ProfileDetail";
 
 import "../styles/containers/ProfileInfo.css";
 
-const ProfileInfo = ({ auth: { user } }) => {
+import FeedBox from "../containers/FeedBox";
+
+const ProfileInfo = ({
+  getPostById,
+  auth: { user },
+  post: { posts, loading }
+}) => {
+  useEffect(() => {
+    getPostById(user._id);
+  }, [getPostById]);
   return (
-    <Grid>
-      <Grid.Column width={6}>
-        <ProfileAvatar />
-      </Grid.Column>
-      <Grid.Column width={10}>
-        <h3 className="Profile__username">{user.name}</h3>
-        <EditProfileButton />
-        <ProfileEtcMenu />
-        <ProfileStatus />
-        <ProfileDetail />
-      </Grid.Column>
-    </Grid>
+    <Fragment>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+          <ProfileAvatar />
+        </Grid>
+        <Grid item xs={8}>
+          <h3 className="Profile__username">{user.name}</h3>
+          <EditProfileButton />
+          <ProfileEtcMenu />
+          <ProfileStatus />
+          <ProfileDetail />
+        </Grid>
+      </Grid>
+      <div>
+        {posts.map(post => (
+          <FeedBox key={post._id} post={post} />
+        ))}
+      </div>
+    </Fragment>
   );
 };
 
 ProfileInfo.propTypes = {
-  auth: PropTypes.object.isRequired
+  getPostById: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  post: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  post: state.post
 });
 
-export default connect(mapStateToProps)(ProfileInfo);
+export default connect(
+  mapStateToProps,
+  { getPostById }
+)(ProfileInfo);

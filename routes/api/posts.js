@@ -30,6 +30,10 @@ router.post(
     try {
       const user = await User.findById(req.user.id).select("-password");
 
+      if (user.role === "blacklist") {
+        res.json("넌 글 못써");
+      }
+
       var re = new RegExp(/(#[0-9a-zA-Z가-힝]+)/, "g");
 
       // 문자열 구하기
@@ -130,6 +134,7 @@ router.get("/", async (req, res) => {
 // @access   Private
 router.get("/:id", auth, async (req, res) => {
   try {
+    console.log(req.params.id);
     const post = await Post.findById(req.params.id);
 
     if (!post) {

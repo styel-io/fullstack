@@ -8,7 +8,8 @@ import {
   ADD_COMMENT,
   REMOVE_COMMENT,
   ADD_POST_STANDBY,
-  GET_POSTS_BY_TAG
+  GET_POSTS_BY_TAG,
+  GET_POSTS_BY_ID
 } from "../actions/types";
 
 const initialState = {
@@ -25,6 +26,7 @@ export default (state = initialState, action) => {
   switch (type) {
     case GET_POSTS:
     case GET_POSTS_BY_TAG:
+    case GET_POSTS_BY_ID:
       return {
         ...state,
         posts: payload,
