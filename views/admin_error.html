@@ -1,0 +1,121 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <title>Document</title>
+
+</head>
+
+<style>
+    body {
+        text-align: center;
+        margin: 0 auto;
+        padding: 0 auto;
+        border: 0 auto;
+    }
+
+    #box {
+        position: absolute;
+        width: 1200;
+        height: 600px;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border: #000 solid 1px;
+        background:#000;
+    }
+
+    img {
+        overflow: hidden;
+        float: right;
+        max-width: 50%;
+        height: 100%;
+       
+    }
+
+    .font {
+        background-color: #000;
+        color: white;
+        font-size: 20px;
+    }
+
+    .main_font {
+        background-color: #000;
+        color: white;
+        font-size: 60px;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .main_style {
+        float: left;
+        width: 50%;
+        text-align: center;
+        margin-top: 100px;
+    }
+
+    a {
+        border: none;
+    }
+
+    .button {
+        border: none;
+        margin-bottom: 50px;
+        background-color: white; 
+        color: #000;
+    }
+
+    .div_chapter {
+        text-align: left;
+        margin-left: 30px;
+    }
+
+
+</style>
+
+
+<body>
+    <div id="box">
+        <div>
+            <div class="main_style"> 
+                <div class="main_font"> Oops!</div>
+                <br>
+                <div class="div_chapter">
+                    <h2 class="font">It seems that you're lost in a perpetual black hole. Let us help guide you out and get you back home.</h2> 
+                </div>
+                
+                <div class="div_chapter">
+                    <h2 class="font"> Chapter 1. Login failed. Check the user name and password. </h2>
+                </div>
+                
+                <div class="div_chapter">
+                    <h2 class="font"> Chapter 2. Make sure you have admin privileges. </h2>
+                </div>
+                
+                <div class="div_chapter">
+                    <h2 class="font"> Chapter 3. contact us at <b>styel@google.com</b> </h2>
+                </div>
+                </div>
+            <div>
+                <img src="error.png" >
+            </div>
+        </div>
+        <div style="position: absolute; bottom: 0; left:220px;">
+                <a href="#"> <button type="button" class="font button">GO Back</button> </a>
+                <a href="#"> <button type="button" class="font button">Admin</button> </a>
+        </div>
+    </div>
+   
+</body>
+
+</html>
