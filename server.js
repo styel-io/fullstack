@@ -1,7 +1,7 @@
 const express = require("express");
 const connectDB = require("./config/db");
 const logger = require("morgan");
-const helmet = require("helmet");
+// const helmet = require("helmet");
 
 const app = express();
 
@@ -11,7 +11,8 @@ connectDB();
 // Init Middleware
 app.use(express.json({ extended: false }));
 app.use(logger("dev"));
-app.use(helmet());
+// app.use(helmet());
+// app.use(helmet.xssFilter());
 app.disable("x-powered-by");
 
 app.get("/", (req, res) => res.send("API Running"));
