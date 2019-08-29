@@ -152,7 +152,7 @@ const Navbar = ({
             <Link to="/">
               <img
                 alt="STYEL"
-                src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_42x42.png"
+                src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_36x36.png"
               />
             </Link>
             <div className={classes.search}>
