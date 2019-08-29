@@ -22,7 +22,7 @@ import TextField from "@material-ui/core/TextField";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import { addComment } from "../actions/post";
+import { addComment, deletePost } from "../actions/post";
 // import "../styles/containers/FeedBox.css";
 
 const useStyles = makeStyles(theme => ({
@@ -51,7 +51,12 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FeedBox = ({ post, auth: { user }, addComment }) => {
+const FeedBox = ({
+  post,
+  auth: { user, isAuthenticated },
+  addComment,
+  deletePost
+}) => {
   const classes = useStyles();
 
   const [expanded, setExpanded] = React.useState(false);
@@ -69,6 +74,10 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
   function handleClose() {
     setAnchorEl(null);
   }
+
+  const editPost = () => {
+    console.log("포스트 수정");
+  };
 
   return (
     <Card className={classes.card}>
@@ -96,8 +105,8 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Edit</MenuItem>
-              <MenuItem onClick={handleClose}>Delete</MenuItem>
+              <MenuItem onClick={editPost}>Edit</MenuItem>
+              <MenuItem onClick={() => deletePost(post._id)}>Delete</MenuItem>
             </Menu>
           </div>
         }
@@ -139,23 +148,25 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
               />
             ))}
           </div>
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              addComment(post._id, { text });
-              setText("");
-            }}
-          >
-            <TextField
-              id="standard-name"
-              autoFocus
-              fullWidth
-              placeholder="Comment"
-              className={classes.textField}
-              value={text}
-              onChange={e => setText(e.target.value)}
-            />
-          </form>
+          {isAuthenticated ? (
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                addComment(post._id, { text });
+                setText("");
+              }}
+            >
+              <TextField
+                id="standard-name"
+                autoFocus
+                fullWidth
+                placeholder="Comment"
+                className={classes.textField}
+                value={text}
+                onChange={e => setText(e.target.value)}
+              />
+            </form>
+          ) : null}
         </CardContent>
       </Collapse>
     </Card>
@@ -163,7 +174,9 @@ const FeedBox = ({ post, auth: { user }, addComment }) => {
 };
 
 FeedBox.propTypes = {
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  deletePost: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -172,5 +185,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addComment }
+  { addComment, deletePost }
 )(FeedBox);
