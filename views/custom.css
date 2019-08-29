@@ -64,5 +64,49 @@ html, body {
 
  }
 
+ .h4 {
+   font-family: 'Courier New', Courier, monospace;
+   color: #818181;
+ }
+  /* 대시보드 점보트론 스타일 */
+  .jumbotron {
+    background-color: #111;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+
+
+  /* 대시보드 메인 동그라미 스타일 */
+.placeholders h4 { 
+  margin-bottom: 0;
+  color: white;
+
+}
+
+.placeholder { 
+  margin-top: 70px;
+}
+
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+
+/* 대시보드 동그라미 안에 글씨 넣는 스타일 */
+.dash_wrap {
+  position: relative;
+}
+
+.dash_image {
+  vertical-align: middle;
+}
+
+.dash_text {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
 
  /* <a class="nav-link" href="/admin/logout" style="position: fixed; top: 2%; left:93%;">Sign Out</a> */
