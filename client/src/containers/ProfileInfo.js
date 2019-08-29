@@ -37,6 +37,7 @@ const ProfileInfo = ({
           <ProfileDetail />
         </Grid>
       </Grid>
+      <br />
       <div>
         {posts.map(post => (
           <FeedBox key={post._id} post={post} />

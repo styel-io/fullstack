@@ -130,12 +130,14 @@ router.get("/", async (req, res) => {
 });
 
 // @route    GET api/posts/:id
-// @desc     Get post by ID
+// @desc     Get post by user ID
 // @access   Private
 router.get("/:id", auth, async (req, res) => {
   try {
     console.log(req.params.id);
-    const post = await Post.findById(req.params.id);
+    const user = req.params.id;
+    const post = await Post.find({ user }).sort({ date: -1 });
+    console.log(post);
 
     if (!post) {
       return res.status(404).json({ msg: "Post not found" });
