@@ -12,122 +12,6 @@ const Tag = require("../../models/Tag");
 // @desc     Create a post
 // @access   Private
 
-// router.post(
-//   "/",
-//   [
-//     auth,
-//     [
-//       check("text", "Text is required")
-//         .not()
-//         .isEmpty()
-//     ]
-//   ],
-//   async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(400).json({ errors: errors.array() });
-//     }
-
-//     try {
-//       const user = await User.findById(req.user.id).select("-password");
-
-//       var re = new RegExp(/(#[0-9a-zA-Z가-힝]+)/, "g");
-//       var script = new RegExp(
-//         /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\$%&\\\=\(\'\"]/,
-//         "g"
-//       );
-
-//       // 문자열 구하기
-//       var searchString = req.body.text;
-//       var matchArray;
-//       var scriptArray;
-//       var scriptString = "";
-//       var resultString = "<div>";
-//       var first = 0;
-//       var last = 0;
-//       var hashtagArray = [];
-//       var standByTag = "";
-
-//       while ((scriptArray = script.exec(searchString)) != null) {
-//         last = scriptArray.index;
-//         scriptString += searchString.substring(first, last);
-//         scriptArray[0] = scriptArray[0].replace("<", "<");
-
-//         last = script.lastIndex;
-//       }
-//       scriptString += searchString.substring(first, searchString.length);
-
-//       // 각각의 일치하는 부분 검색
-//       while ((matchArray = re.exec(scriptString)) != null) {
-//         last = matchArray.index;
-
-//         // 일치하는 모든 문자열을 연결
-//         resultString += scriptString.substring(first, last);
-//         matchArray[0] = matchArray[0].replace(" ", "");
-//         // "<a href='/api/routes/search/matchArray[0]'>" + matchArray[0] + "</a>"
-//         // 일치하는 부분에 강조 스타일이 지정된 class 추가
-//         resultString +=
-//           `<a href='/t/${matchArray[0].replace("#", "")}'>` +
-//           matchArray[0] +
-//           "</a>";
-
-//         first = re.lastIndex;
-//         // RegExp 객체의 lastIndex 속성을 이용해 검색 결과의 마지막 인덱스 접근 가능
-//         console.log(matchArray[0]);
-
-//         standByTag = matchArray[0].replace("#", "");
-
-//         hashtagArray.push(standByTag);
-
-//         console.log(hashtagArray);
-//       }
-
-//       // 문자열 종료
-//       resultString += scriptString.substring(first, scriptString.length);
-//       resultString += "</div>";
-
-//       const newPost = new Post({
-//         hashtags: hashtagArray,
-//         text: resultString,
-//         imageurl: req.body.imageurl,
-//         name: user.name,
-//         avatar: user.avatar,
-//         user: req.user.id
-//       });
-
-//       const post = await newPost.save();
-
-//       res.json(post);
-
-//       const post_id = post.id;
-
-//       for (let i = 0; i < hashtagArray.length; i++) {
-//         console.log(hashtagArray[i]);
-//         console.log(post_id);
-//         const tag = await Tag.findOne({ tag: hashtagArray[i] });
-
-//         console.log(tag);
-
-//         if (tag === null) {
-//           const newTag = new Tag({
-//             tag: hashtagArray[i],
-//             postId: post_id
-//           });
-
-//           await newTag.save();
-//         } else {
-//           tag.postId.unshift(post_id);
-//           console.log(tag);
-//           await tag.save();
-//         }
-//       }
-//     } catch (err) {
-//       console.error(err.message);
-//       res.status(500).send("Server Error");
-//     }
-//   }
-// );
-
 router.post(
   "/",
   [
@@ -155,6 +39,7 @@ router.post(
 
       // 문자열 구하기
       var searchString = req.body.text;
+      searchString = searchString.replace(/</g, "&lt;");
       var matchArray;
       var resultString = "<div>";
       var first = 0;
