@@ -14,7 +14,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
-import ReCAPTCHA from "react-google-recaptcha";
+// import ReCAPTCHA from "react-google-recaptcha";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 
 const Login = ({ login, isAuthenticated }) => {
   const classes = useStyles();
-  const recaptchaRef = React.createRef();
+  // const recaptchaRef = React.createRef();
 
   const [values, setValues] = React.useState({
     email: "",
@@ -79,7 +79,7 @@ const Login = ({ login, isAuthenticated }) => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    recaptchaRef.current.execute();
+    // recaptchaRef.current.execute();
     login(email, password);
   };
 
@@ -119,11 +119,11 @@ const Login = ({ login, isAuthenticated }) => {
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <ReCAPTCHA
+          {/* <ReCAPTCHA
             ref={recaptchaRef}
             size="invisible"
             sitekey="6LdBn7UUAAAAAM9G1HJwMctDjgaNn18ffn-37kHP"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
