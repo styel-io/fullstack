@@ -1,8 +1,9 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
+import { getPostByTag } from "../actions/post";
 
 // material-ui
 import { fade, makeStyles } from "@material-ui/core/styles";
@@ -89,8 +90,14 @@ const AdapterLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} {...props} />
 ));
 
-const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
+const Navbar = ({
+  getPostByTag,
+  auth: { isAuthenticated, loading, user },
+  logout
+}) => {
   const classes = useStyles();
+
+  const [searchTag, setSearchTag] = useState("");
 
   const authLinks = (
     <Fragment>
@@ -118,6 +125,20 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
     </Fragment>
   );
 
+  const handleClick = () => {
+    console.log("핸들클릭");
+    console.log(searchTag);
+    getPostByTag(searchTag);
+    document.getElementById("inputSearch").value = "";
+    // getPostByTag(searchTag);
+  };
+
+  const handleKeyPress = e => {
+    if (e.key === "Enter") {
+      handleClick();
+    }
+  };
+
   return (
     <Fragment>
       <div className={classes.root}>
@@ -131,7 +152,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
             <Link to="/">
               <img
                 alt="STYEL"
-                src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_42x42.png"
+                src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_36x36.png"
               />
             </Link>
             <div className={classes.search}>
@@ -144,7 +165,10 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
                   root: classes.inputRoot,
                   input: classes.inputInput
                 }}
+                id="inputSearch"
                 inputProps={{ "aria-label": "search" }}
+                onChange={e => setSearchTag(e.target.value)}
+                onKeyPress={handleKeyPress}
               />
             </div>
             {!loading && (
@@ -159,6 +183,7 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
 
 Navbar.propTypes = {
   logout: PropTypes.func.isRequired,
+  getPostByTag: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -168,5 +193,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { logout }
+  { logout, getPostByTag }
 )(Navbar);
