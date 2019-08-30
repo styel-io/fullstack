@@ -32,10 +32,6 @@ class NewPostUpload extends Component {
     // let randomNum = Math.floor(Math.random() * 11);
     let date = new Date();
 
-    if (fileType !== ("jpg", "png")) {
-      console.log("거절");
-    }
-
     console.log(fileName, fileType);
     console.log("Preparing the upload");
     axios
