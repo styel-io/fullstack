@@ -20,6 +20,10 @@ class NewPostUpload extends Component {
 
   handleChange = files => {
     console.log(files[0]);
+    if (files[0] === undefined) {
+      return console.log("거절");
+    }
+
     let file = files[0];
     // Split the filename to get the name and type
     let fileParts = files[0].name.split(".");
@@ -27,6 +31,10 @@ class NewPostUpload extends Component {
     let fileType = fileParts[1];
     // let randomNum = Math.floor(Math.random() * 11);
     let date = new Date();
+
+    if (fileType !== ("jpg", "png")) {
+      console.log("거절");
+    }
 
     console.log(fileName, fileType);
     console.log("Preparing the upload");
@@ -70,10 +78,14 @@ class NewPostUpload extends Component {
         <h3 style={{ color: "#22b573" }}>SUCCESSFUL UPLOAD</h3>
       </div>
     );
+
     return (
       <div>
         <div className="NewPostBoard__dropzone" id="NewPost_imagePreview">
-          <Dropzone onDrop={acceptedFiles => this.handleChange(acceptedFiles)}>
+          <Dropzone
+            accept="image/*"
+            onDrop={acceptedFiles => this.handleChange(acceptedFiles)}
+          >
             {({ getRootProps, getInputProps }) => (
               <section className="NewPostBoard__dropzone-inner-wrapper">
                 <div

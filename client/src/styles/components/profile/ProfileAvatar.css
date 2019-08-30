@@ -1,6 +1,6 @@
 .Profile__avatar-img-wrapper {
-  width: 150px;
-  height: 150px;
+  max-width: 120px;
+  max-height: 120px;
   margin: 0 auto;
   text-align: center;
   border: 1px solid #dbdbdb;

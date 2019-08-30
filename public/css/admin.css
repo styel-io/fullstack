@@ -1,16 +1,18 @@
-html, body, .full {
-    height: 100%;
+html,
+body,
+.full {
+  height: 100%;
 }
 
 .left-div {
-    background-color: #000;
-    color: #fff;
-    height: 100%;
-    text-align: center;
+  background-color: #000;
+  color: #fff;
+  height: 100%;
+  text-align: center;
 }
 
 .admin_logo {
-    color: #fff;
+  color: #fff;
 }
 
 .paging {
