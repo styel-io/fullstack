@@ -1,52 +1,83 @@
 <html lang="en">
 
 <head>
-    <% include ./inc/header.ejs %>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <title>STYEL Admin</title>
 
 </head>
 
 <body>
-    <% include ./inc/nav.ejs %>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+
+                <div class="toplogo">
+                    <a href="/">
+                        <img alt="STYEL" src="https://styel.s3.ap-northeast-2.amazonaws.com/styel_42x42.png"
+                            style="position:fixed; top:3px; left: 5px;">
+                    </a>
+                </div>
+                <a class="nav-link" href="/admin/logout">Sign Out</a>
+                <p class="nav-top-p"> Admin Page</p>
+                <p class="nav-top-description"> This page is for administrators. Review the status, Manage accounts,
+                    Make Contact for technical support. </p>
+            </div>
+        </div>
+    </nav>
 
     <div class="row">
-        <div class="col-sm-3">
-            <%=user %>님 안녕하세요.
-            <div><a href="/admin/dashboard">Dashboard</a></div>
-            <div><a href="/admin/member_manage">Member</a></div>
+        <div class="sidenav navbar-inverse">
+            <br><br>
+            <a href="/admin/dashboard">&nbsp;Dashboard</a>
+            <a href="/admin/member_manage">&nbsp;Members</a>
+            <a href="#Help">&nbsp;Help</a>
         </div>
-        <div class="col-sm-9">
-            <h1>회원 관리</h1>
-            <table class="table table-striped">
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Admin change</th>
-                    <th>BlackList change</th>
-                </tr>
-                <% for(let i=0; i < all_member.length; i++ ){ %>
 
-                <tr>
-                    <td><%=all_member[i].name %></td>
-                    <td><%=all_member[i].email %></td>
-                    <td><%=all_member[i].role %></td>
-                    <td><a href="/admin/admin_change?user=<%= all_member[i].email %>"><button type="button"
-                                class="btn btn-dark">전환</button></a></td>
-                    <td><a href="/admin/black_change?user=<%= all_member[i].email %>"><button type="button"
-                                class="btn btn-dark">전환</button></a></td>
-                </tr>
-                <% } %>
-            </table>
+        <div class="container">
+            <br><br><br>
+            <div class="jumbotron">
+                <h1>회원 관리</h1>
+                <table class="table" style="color:white">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Admin change</th>
+                        <th>BlackList change</th>
+                    </tr>
+                    <% for(let i=0; i < all_member.length; i++ ){ %>
+    
+                    <tr>
+                        <td><%=all_member[i].name %></td>
+                        <td><%=all_member[i].email %></td>
+                        <td><%=all_member[i].role %></td>
+                        <td><a href="/admin/admin_change?user=<%= all_member[i].email %>"><button type="button"
+                                    class="btn btn-dark">전환</button></a></td>
+                        <td><a href="/admin/black_change?user=<%= all_member[i].email %>"><button type="button"
+                                    class="btn btn-dark">전환</button></a></td>
+                    </tr>
+                    <% } %>
+                </table>
+            </div>
+            
             <div class="paging">
                 <a href="/admin/member_manage?page=<%= page - 1 %>" id="prev" name="<%=page-1%>"><i
                         class="fas fa-caret-left"></i></a>
                 <% for(let p=pnStart; p <= pnEnd; p++){ %>
                 <a href="/admin/member_manage?page=<%= p %>"> <%= p %> </a>&nbsp;
                 <% } %>
-                <a href="/admin/member_manage?page=<%= page + 1 %>" id="next" name="<%=page+1%>"><i class="fas fa-caret-right"></i></a>
+                <a href="/admin/member_manage?page=<%= page + 1 %>" id="next" name="<%=page+1%>"><i
+                        class="fas fa-caret-right"></i></a>
                 <a href="/admin/member_manage?page=<%= pnTotal %>">끝</a>
-                
+
             </div>
         </div>
     </div>
@@ -57,22 +88,22 @@
         let prev = $('#prev').attr('name');
         let next = $('#next').attr('name');
         let end = <%= pnTotal %>;
-        
+
         if (prev == 0) {
             $('#prev').click(function (e) {
                 console.log("막아지는거임");
                 e.preventDefault();
             });
         }
-        if(next == end + 1){
-            $('#next').click(function (e){
+        if (next == end + 1) {
+            $('#next').click(function (e) {
                 console.log("막아지는거임2");
                 e.preventDefault();
             })
         }
 
 
-        
+
     </script>
 </body>
 
