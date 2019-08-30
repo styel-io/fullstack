@@ -141,6 +141,7 @@ router.get("/member_manage", async (req, res) => {
                 all_member: all_member,
                 pnStart : pnStart,
                 pnEnd: pnEnd,
+                pnTotal: pnTotal,
                 page: page
             })
         }

@@ -12,3 +12,9 @@ html, body, .full {
 .admin_logo {
     color: #fff;
 }
+
+.paging {
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+}
