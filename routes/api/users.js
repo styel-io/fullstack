@@ -10,21 +10,36 @@ const User = require("../../models/User");
 
 // ???????
 
+//Todo List YIG_2019.08.30
+/*
+① 최소 8자 ~ 최대 20자 이내로 입력합니다.
+② 반드시 영문, 숫자, 특수문자가 각 1자리 이상 포함되어야 합니다.
+③ 특수문자 중 <, >, (, ), #, ', /, | 는 사용할수 없습니다.
+④ 3자리 이상 연속되는 숫자 또는 문자열은 사용할 수 없습니다.
+   (예:123, 321, 012, abc, cba)
+⑤ 3자리 이상 동일한 숫자 또는 문자열은 사용할 수 없습니다.
+   (예:000, 111, 222, ,aaa, bbb)
+⑥ 아래와 같은 문자는 사용할 수 없습니다.
+   (love, happy, qwer, asdf, zxcv, test, gpin, ipin)
+⑦ 아이디와 연속한 3자리 이상 일치하는 비밀번호는 사용할 수 없습니다.
+*/
+
+
 // @route    POST api/users
 // @desc     Register user // 회원가입
 // @access   Public  // 접근권한 모두 가능
 router.post(
   "/",
   [
-    // name값이 없거나 비어있거나, email값이 email형식이 아니거나, password가 6자리 이하면 에러 메시지를 발생시킨다.
+    // name값이 없거나 비어있거나, email값이 email형식이 아니거나, password가 12자리 이하면 에러 메시지를 발생시킨다.
     check("name", "Name is required")
       .not()
       .isEmpty(),
     check("email", "Please include a valid email").isEmail(),
     check(
       "password",
-      "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 })
+      "Please enter a password with 12 or more characters"
+    ).isLength({ min: 12 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -41,6 +56,33 @@ router.post(
         return res
           .status(400)
           .json({ errors: [{ msg: "User already exists" }] });
+      }
+
+      if (password) {
+        let pw = checkPassword(password); 
+        if(!pw){
+          return res.status(400).json({ errors: [{ msg: "error" }] }); 
+        }
+    }
+
+      function checkPassword(pw){
+        const check1 = /^(?=.*[a-zA-Z])(?=.*[0-9]).{10,12}$/.test(pw);   //영문,숫자
+        const check2 = /^(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{10,12}$/.test(pw);  //영문,특수문자
+        const check3 = /^(?=.*[^a-zA-Z0-9])(?=.*[0-9]).{10,12}$/.test(pw);  //특수문자, 숫자
+        if(!(check1||check2||check3)){
+          console.log("사용할 수 없은 조합입니다.");
+          // alert("사용할 수 없은 조합입니다.\n패스워드 설정안내를 확인해 주세요.");
+          return false;
+        }
+        if(/(\w)\1\1/.test(pw)){
+          console.log('같은 문자를 3번 이상 사용하실 수 없습니다.\n패스워드 설정안내를 확인해 주세요.');
+          return false;
+        }
+        // if(pw.search(pw)>-1){
+        //   alert("비밀번호에 아이디가 포함되었습니다.\n패스워드 설정안내를 확인해 주세요.");
+        //   return false;
+        // }
+        return true;
       }
 
       const avatar = gravatar.url(email, {
