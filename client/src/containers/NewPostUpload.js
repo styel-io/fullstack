@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Dropzone from "react-dropzone";
+import Dropzone, { useDropzone } from "react-dropzone";
 
 import { addPostStandby } from "../actions/post";
 import { connect } from "react-redux";
@@ -70,6 +70,15 @@ class NewPostUpload extends Component {
         <h3 style={{ color: "#22b573" }}>SUCCESSFUL UPLOAD</h3>
       </div>
     );
+
+    const {
+      acceptedFiles,
+      rejectedFiles,
+      getRootProps,
+      getInputProps
+    } = useDropzone({
+      accept: "image/jpeg, image/png"
+    });
     return (
       <div>
         <div className="NewPostBoard__dropzone" id="NewPost_imagePreview">
