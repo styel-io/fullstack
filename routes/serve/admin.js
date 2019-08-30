@@ -89,70 +89,27 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/member_manage", async (req, res) => {
-    try {
-        let page = req.query.page;
-        
-        if(!page){
-            page = 1;
-        }else{
-            page = parseInt(page);
-        }
+  try {
+    let page = req.query.page;
+    // 몇 페이지인지 데이터 받아오기
 
-        let skip = (page - 1) * 10;
-        let limit = 10;
-
-        let all_member = await User.find().skip(skip).limit(limit);
-        //console.log(all_member);
-
-        if (!req.session.user) {
-            // 로그인이 안되어 있는 경우 돌리기
-            res.redirect("/admin/error");
-            return false;
-
-        } else {
-            let email = req.session.user;
-            let count_member = await User.count();
-            let user = await User.findOne({ email });
-            
-            pnSize = 10;
-            pnTotal = Math.ceil(count_member / limit);
-            pnStart = ((Math.ceil(page/pnSize) -1) * pnSize) +1;
-            pnEnd = (pnStart + pnSize) -1;
-
-            if(pnEnd > pnTotal){
-                pnEnd = pnTotal;
-            }
-            
-
-            console.log(pnEnd);
-
-            
-            if (user.role != "admin") {
-                res.redirect("/admin/error");
-                return false;
-            }
-            res.render("manage.ejs", {
-                user: user.name,
-                all_member: all_member,
-                pnStart : pnStart,
-                pnEnd: pnEnd,
-                pnTotal: pnTotal,
-                page: page
-            })
-        }
-
-    } catch (err) {
-        console.log("error 발생 ㅠㅠ");
-        console.log(err);
+    if (!page) {
+      page = 1;
+    } else {
+      page = parseInt(page);
     }
+    // 처음 들어갔을 경우 페이지 값을 못 받아 오기 때문에 값이 없을 경우 1부여
+    // 기본적으로 받아오는 값이 int가 아니기 때문에 int로 치환
 
     let skip = (page - 1) * 10;
+    // 페이징을 위한 스킵할 데이터의 수
     let limit = 10;
+    // 한 페이지에 보여줄 데이터의 수
 
     let all_member = await User.find()
       .skip(skip)
       .limit(limit);
-    //console.log(all_member);
+    // 보여줄 데이터
 
     if (!req.session.user) {
       // 로그인이 안되어 있는 경우 돌리기
@@ -163,10 +120,10 @@ router.get("/member_manage", async (req, res) => {
       let count_member = await User.count();
       let user = await User.findOne({ email });
 
-      pnSize = 10;
-      pnTotal = Math.ceil(count_member / limit);
-      pnStart = (Math.ceil(page / pnSize) - 1) * pnSize + 1;
-      pnEnd = pnStart + pnSize - 1;
+      let pnSize = 10;
+      let pnTotal = Math.ceil(count_member / limit);
+      let pnStart = (Math.ceil(page / pnSize) - 1) * pnSize + 1;
+      let pnEnd = pnStart + pnSize - 1;
 
       if (pnEnd > pnTotal) {
         pnEnd = pnTotal;
@@ -183,6 +140,7 @@ router.get("/member_manage", async (req, res) => {
         all_member: all_member,
         pnStart: pnStart,
         pnEnd: pnEnd,
+        pnTotal: pnTotal,
         page: page
       });
     }
@@ -190,7 +148,7 @@ router.get("/member_manage", async (req, res) => {
     console.log("error 발생 ㅠㅠ");
     console.log(err);
   }
-};
+});
 
 router.get("/admin_change", async (req, res) => {
   try {
