@@ -28,7 +28,7 @@ export const addPostStandby = ({
     imageurl: imageurl
   };
 
-  console.log(data);
+  // console.log(data);
   dispatch({
     type: ADD_POST_STANDBY,
     payload: data
