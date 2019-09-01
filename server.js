@@ -4,7 +4,7 @@ const logger = require("morgan");
 
 const session = require("express-session");
 const cookieparser = require("cookie-parser");
-const helmet = require("helmet");
+// const helmet = require("helmet");
 
 const app = express();
 const path = require("path");
@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Init Middleware
 app.use(express.json({ extended: false }));
 app.use(logger("dev"));
-app.use(helmet());
+// app.use(helmet());
 // app.use(helmet.xssFilter());
 // app.disable("x-powered-by");
 
