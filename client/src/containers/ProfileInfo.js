@@ -47,8 +47,10 @@ const ProfileInfo = ({
           <ProfileAvatar />
         </Grid>
         <Grid item xs={6}>
-          <h3 className="Profile__username">{user.name}</h3>
-
+          <h3 className="Profile__username">
+            {user.name}&nbsp;&nbsp;
+            {user.role}
+          </h3>
           <span>
             <IconButton
               aria-label="settings"
