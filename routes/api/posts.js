@@ -32,7 +32,7 @@ router.post(
       const user = await User.findById(req.user.id).select("-password");
 
       if (user.role === "blacklist") {
-        res.json("넌 글 못써");
+        return res.json("넌 글 못써");
       }
 
       var re = new RegExp(/(#[0-9a-zA-Z가-힝]+)/, "g");
@@ -40,7 +40,7 @@ router.post(
       // 문자열 구하기
       var searchString = req.body.text;
 
-      searchString =searchString.replace(/</g,"&lt;");
+      searchString = searchString.replace(/</g, "&lt;");
 
       var matchArray;
       var resultString = "<div>";

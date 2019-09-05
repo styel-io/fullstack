@@ -4,7 +4,6 @@ const logger = require("morgan");
 
 const session = require("express-session");
 const cookieparser = require("cookie-parser");
-// const helmet = require("helmet");
 
 const app = express();
 const path = require("path");
@@ -20,11 +19,6 @@ app.engine("html", require("ejs").renderFile);
 // Init Middleware
 app.use(express.json({ extended: false }));
 app.use(logger("dev"));
-// app.use(helmet());
-
-// app.use(helmet.xssFilter());d
-
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   express.urlencoded({
@@ -49,6 +43,8 @@ app.use(
     // cookie: 쿠키 설정
   })
 );
+
+// app.get("/", (req, res) => res.send("API Running"));
 
 // Define Routes
 app.use("/api/users", require("./routes/api/users"));
