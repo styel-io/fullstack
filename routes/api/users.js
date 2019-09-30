@@ -26,8 +26,8 @@ router.post(
       .isEmpty(),
     check(
       "password",
-      "Please enter a password with 12 or more characters"
-    ).isLength({ min: 12 })
+      "Please enter a password with 10 or more characters"
+    ).isLength({ min: 10 })
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -50,16 +50,14 @@ router.post(
         let pw = checkPassword(password);
         console.log(pw);
         if (!pw) {
-          return res
-            .status(400)
-            .json({
-              errors: [
-                {
-                  msg:
-                    "비밀번호는 영어, 숫자, 특수문자를 결합하여 12자를 써주세요"
-                }
-              ]
-            });
+          return res.status(400).json({
+            errors: [
+              {
+                msg:
+                  "비밀번호는 영어, 숫자, 특수문자를 결합하여 10~12자를 써주세요"
+              }
+            ]
+          });
         }
       }
 
