@@ -1,4 +1,0 @@
-{
-  "mongoURI": "mongodb+srv://ganzik:a09180918z@cluster0-szqbh.mongodb.net/styel_final?retryWrites=true&w=majority",
-  "jwtSecret": "dlejfldna"
-}
